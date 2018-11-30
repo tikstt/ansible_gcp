@@ -1,0 +1,25 @@
+---
+# - hosts: gce_robotframework_ips
+  # vars:
+    # pip_install_packages:
+      # - name: robotframework
+        # index-url: https://pypi.python.org/simple/
+  # vars_files:
+    # - ci_vars/pip.yml        
+  # roles:
+    # - geerlingguy.pip   
+- hosts: gce_robotframework_ips
+  tasks:
+    - name: Run the equivalent of "apt-get update" as a separate step
+      apt:
+        update_cache: yes 
+ 
+    - name: Install python2.7 via command module
+      apt: name=python2.7 update_cache=yes state=present
+ 
+    - name: Install python-pip  via command module
+      apt: name=python-pip  update_cache=yes state=present      
+     
+    - name: Install robotframework command module 
+      command : pip install robotframework --index-url=https://pypi.python.org/simple/ 
+          

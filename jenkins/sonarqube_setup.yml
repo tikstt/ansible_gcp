@@ -1,0 +1,31 @@
+---
+- hosts: gce_sonarqube_ips
+  tasks:
+    - name: Run the equivalent of "apt-get update" as a separate step
+      apt:
+        update_cache: yes   
+    - name: Install unzip
+      apt: name=unzip state=present  
+ 
+    - name: Install mlocate client
+      apt: name=mlocate state=present  
+ 
+- name:  Install Java8  
+  hosts: gce_sonarqube_ips
+  roles:
+    - role: william-yeh.oracle_java
+      become: yes
+  vars:
+    java_version: 8
+    java_subversion: 192
+    java_build: 12
+    java_download_from_oracle: false  
+    
+- name:  Install SonarQube   
+  hosts: gce_sonarqube_ips   
+  vars_files:
+    - ci_vars/sonarqube.yml  
+  roles:   
+    - role: geerlingguy.sonar
+      become: yes
+      ignore_errors: yes  

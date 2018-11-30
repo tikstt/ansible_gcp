@@ -1,0 +1,47 @@
+---
+# compute-video-demo-ansible
+- name: Create GitLab instances
+  hosts: local
+  connection: local
+  gather_facts: False
+  vars_files:
+    - gce_vars/auth
+    - gce_vars/machines
+    - gce_vars/jenkinszone
+    
+  tasks:
+    - name: Bring up the Gitlab instances
+      gce:
+        instance_names: "{{ gitlab_name }}"
+        machine_type: "{{ machine_type }}"
+        image: "{{ image }}"
+        zone: "{{ jenkins_zone }}"
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
+      register: gitlab_host
+    - name: Allow HTTP 80 http & https
+      gce_net:
+        fwname: all-http-80
+        name: default
+        allowed: tcp:80
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"  
+    - name: Allow HTTP 443 http & https
+      gce_net:
+        fwname: all-http-443
+        name: default
+        allowed: tcp:443
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"          
+        
+        
+  post_tasks:
+    - name: Wait for SSH for gitlab instances
+      wait_for: delay=1 host={{ item.public_ip }} port=22 state=started timeout=30
+      with_items: "{{ gitlab_host.instance_data }}"
+    - name: Save host data for gitlab zone
+      add_host: hostname={{ item.public_ip }} groupname=gce_gitlab_ips
+      with_items: "{{ gitlab_host.instance_data }}"  

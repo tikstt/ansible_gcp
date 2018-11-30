@@ -1,0 +1,369 @@
+html, 
+body {
+    height: 100%;
+    overflow: hidden;
+    background-color: #fafafa;
+}
+
+.icw .futuraHeavyBT {
+    font-family: 'FuturaHeavyBT';
+}
+
+.login-page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    border-top: 3px solid #00a950;
+}
+
+.login-page .main {
+    height: 100%;
+}
+.login-page .main:after {
+    content: "";
+    display: table;
+    height: 0;
+    clear: both;
+}
+
+.login-page .logo {
+    text-align: center;
+    padding: 30px 0;
+}
+.login-page .img-logo {
+    width: 205px !important;
+}
+
+.login-page .list-inline li {
+    margin-right: 15px;
+}
+.login-page .list-inline li:last-child {
+    margin-right: 0;
+}
+
+.login-content {
+    float: right;
+    width: 57%;
+    height: 100%;
+    position: relative;
+    background-color: #fafafa;
+    overflow-y: auto;
+}
+
+.login-content .icw-alert {
+    margin-bottom: 0;
+    border: 0;
+    background-color: #00a950;
+    font-size: 14px;
+    color: #fff;
+    font-weight: normal;
+}
+.login-content .icw-alert .icw-close {
+    right: 20px;
+    top: 50%;
+    margin-top: -12px;
+}
+.login-content .icw-alert .icw-close:after {
+    color: #fff;
+}
+
+.login-container {
+    position: relative;
+    height: auto;
+    min-height: 100%;
+    margin-bottom: -85px;
+}
+
+.login-inner {
+    padding: 30px 40px;
+}
+
+.push {
+    height: 85px;
+}
+
+.navbar {
+    text-align: right;
+}
+.navbar > a {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    margin-left: 20px;
+}
+.navbar .lang {
+    font-family: 'DBThaiTextXBd';
+    font-size: 22px;
+    color: #00a950;
+}
+.navbar .menu .ic {
+    vertical-align: top;
+}
+.navbar .menu .ic:before {
+    content: "\e92e";
+    color: #00a950;
+}
+
+.login-content .form-box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 25px 25px 35px;
+    margin-bottom: 40px;
+}
+.login-content .form-box .heading {
+    font-family: 'FuturaHeavyBT';
+    font-size: 22px;
+    color: #00a950;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.login-content .icw-form .icw-input {
+    padding-bottom: 10px;
+}
+
+.login-content .btn-select {
+    display: block;
+    width: 360px;
+    max-width: 100%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 40px 20px;
+    margin: 30px auto;
+    text-align: center;
+    font-family: 'FuturaHeavyBT';
+    font-size: 25px;
+    line-height: 1;
+    letter-spacing: -1px;
+    color: #00a950;
+    -webkit-transition: border-color 300ms ease-in-out;
+    -moz-transition: border-color 300ms ease-in-out;
+    transition: border-color 300ms ease-in-out;
+}
+.login-content .btn-select:hover {
+    border-color: #00a950;
+}
+
+.login-content .action-form {
+    margin-top: 25px;
+}
+.login-content .action-form .other {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+}
+.login-content .btn-outline {
+    min-width: inherit;
+}
+
+/* Preview Slider */
+.preview-slider {
+    width: 43%;
+    float: left;
+    overflow: hidden;
+    min-height: 980px;
+}
+.preview-slider .master-slider {
+    width: 100% !important;
+}
+.preview-slider .entrycontent {
+    padding: 60px 40px;
+    font-size: 16px;
+}
+.preview-slider .entrycontent li {
+    margin-bottom: 15px;
+}
+.preview-slider .heading {
+    margin-bottom: 15px;
+}
+.preview-slider .heading.futuraHeavyBT {
+    font-size: 50px;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+.preview-slider .sub-heading {
+    margin-bottom: 25px;
+    line-height: 0.9;
+}
+
+.form-message {
+    padding: 40px 15px;
+    background-color: #fafafa;
+}
+
+.column-main .content-intro .heading {
+    padding-right: 0;
+}
+
+/* Smart App */
+.smart-app {
+    display: none;
+    background-color: #f2f2f2;
+    padding: 10px;
+    overflow: hidden;
+    font-size: 0;
+}
+.smart-app img {
+    display: inline-block;
+    vertical-align: middle;
+}
+.smart-app .a-close {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    padding: 0 10px 0 0;
+}
+.smart-app .a-view {
+    font-size: 18px;
+    color: #0072ff;
+    text-decoration: none;
+    float: right;
+    line-height: 63px;
+    padding: 0 5px 0 5px;
+}
+.smart-app .ic-close {
+    font-size: 10px;
+    font-weight: 600;
+    color: #6c6c6c;
+}
+.smart-app-name {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 10px;
+    color: #000;
+    font-size: 14px;
+    font-weight: normal;
+}
+.smart-app-name small {
+    font-size: 11px;
+}
+
+
+/* Notice */
+.icw-notice {
+    position: relative;
+    padding: 15px 10px 15px 40px;
+    background-color: #f2f2f2;
+    font-size: 14px;
+    text-align: left;
+    width: 360px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    
+}
+.icw-notice:before {
+    font-family: 'icokbank';
+    content: "\e92f";
+    font-size: 19px;
+    line-height: 1;
+    position: absolute;
+    left: 12px; top: 0;
+    margin-top: 15px;
+    color: #00a950;
+}
+
+
+@media screen and (min-height:860px) { 
+    
+    .login-page .logo { padding: 60px 0 40px;}
+    
+}
+
+
+@media screen and (max-height:800px) { 
+    
+    .preview-slider .entrycontent { padding-top: 40px;}
+    
+}
+
+
+@media screen and (max-width:1366px) { 
+    
+    .preview-slider .heading.futuraHeavyBT { font-size: 45px;}
+    .preview-slider .entrycontent { padding: 40px 30px; font-size: 14px;}
+    
+}
+
+
+@media (max-width:1366px) and (min-width:1200px) { 
+    
+    .preview-slider .sub-heading { font-size: 40px;}
+    
+}
+
+
+@media screen and (max-width:1199px) { 
+    
+    .preview-slider .heading.futuraHeavyBT { font-size: 45px;}
+    .preview-slider .entrycontent { padding: 30px;}
+    
+}
+
+@media screen and (max-width:991px) { 
+    
+    html, body { overflow: visible !important;}
+    
+    .login-page .img-logo { width: 185px !important;}
+    
+    .login-content { width: 100%; height: auto; float: none; min-height: inherit; overflow: inherit;}
+    
+    .preview-slider { width: 100%; min-height: 100vh; float: none; display: none;}
+    .preview-slider .master-slider { min-height: 100vh;}
+    .preview-slider .entrycontent { font-size: 14px;}
+    
+    /*.smart-app { display: block;}*/
+    
+}
+
+
+@media screen and (max-width:767px) { 
+    
+    .preview-slider .heading.futuraHeavyBT { font-size: 40px;}
+    
+    .login-page .logo { padding: 30px 0;}
+    
+    .login-content .form-box { margin-bottom: 30px;}
+    
+    .login-container { margin-bottom: -60px;}
+    
+    .login-inner { padding: 30px 20px;}
+    
+    .slogan { padding: 20px 0;}
+    
+    .push { height: 60px;}
+    
+}
+
+
+@media screen and (max-width:480px) { 
+    
+    .preview-slider .heading.futuraHeavyBT { font-size: 30px;}
+    .preview-slider .entrycontent { padding: 25px 15px;}
+    
+    .login-content .form-box { padding: 30px 20px;}
+    
+    .login-container { margin-bottom: -50px;}
+    
+    .slogan { padding: 15px 0;}
+    
+    .push { height: 50px;}
+    
+    .icw-alert-sm { padding: 10px 40px 10px 20px;}
+    .login-content .icw-alert { font-size: 13px;}
+    
+}
+
+@media screen and (max-width:375px) { 
+
+    .preview-slider .sub-heading { font-size: 30px; margin-bottom: 15px;}
+    
+}

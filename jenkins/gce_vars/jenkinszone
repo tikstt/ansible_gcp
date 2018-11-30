@@ -1,0 +1,10 @@
+---
+#,myinstance3
+# Variables defined for us-central1-a
+jenkins_name: jenkins1
+gitlab_name: gitlab1
+sonarqube_name: sonarqube1
+jmeter_name: jmeter1
+robotframework_name: robotframework1
+
+jenkins_zone: us-central1-a

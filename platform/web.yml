@@ -1,0 +1,20 @@
+---    
+- name:  Install Java8
+  hosts: gce_instances_ips
+  roles:
+    - role: william-yeh.oracle_java
+      become: yes
+  vars:
+    java_version: 8
+    java_subversion: 192
+    java_build: 12
+    java_download_from_oracle: false
+
+
+# compute-video-demo-ansible
+- name: Deploy Apache and custom html page
+  hosts: gce_instances_ips
+  #connection: local
+  roles:
+    - simple-web
+ 

@@ -1,0 +1,818 @@
+/**************  Validator Class *************************/
+
+function Validator(lang) {
+    var validateFieldList = new Array();
+    var delegator;
+    var errorPanel;
+    var successPanel;
+
+    var prefixTh = "กรุณาระบุค่า";
+    var prefixEn = "Please enter";
+    var prefix = "";
+    if(lang=='th'){
+        prefix = prefixTh;
+    } else {
+        prefix = prefixEn;
+    }
+
+    // Method
+    this.addField = addField;
+    this.validateField = validateField;
+    this.getDelegator = getDelegator;
+    this.setErrorPanel = setErrorPanel;
+    this.displayError = displayError;
+    this.clearError = clearError;
+    this.addError = addError;
+    this.setSuccessPanel = setSuccessPanel;
+
+    //    function setLang( lang ){
+    //        this.lang = lang;
+    //        if(lang=='th'){
+    //            prefix = prefixTh;
+    //        } else {
+    //            prefix = prefixEn;
+    //        }
+    //        alert(lang);
+    //    }
+
+    // Implements
+    function addError( formFieldObj, errorMessageObj ) {
+        if ( delegator == null  ) {
+            delegator = buildValidationDelegator();
+        }
+        delegator.valid = false;
+        delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+            formField : formFieldObj,
+            errorMessage : errorMessageObj
+        };
+    }
+
+    function setErrorPanel( _errorPanel ) {
+        errorPanel = _errorPanel;
+    }
+
+    function setSuccessPanel( _successPanel ) {
+        successPanel = _successPanel;
+    }
+
+    function getDelegator() {
+        return delegator;
+    }
+
+    function addField( formField, fieldName, validateInfo )
+    {
+        validateFieldList[validateFieldList.length]  = buildValidateField( formField, fieldName, validateInfo );
+    }
+
+
+    function validateField()
+    {   
+        clearError();
+        delegator = buildValidationDelegator();
+
+        for ( var fieldIndex=0; fieldIndex<validateFieldList.length; fieldIndex++ )
+        {
+            var validateField = validateFieldList[ fieldIndex ];
+            var validateRequired = false;
+            
+            // Reset Background Color
+            if ( validateField.formField.style != null )
+            {
+                validateField.formField.style.backgroundColor = validateField.formField.oldBackgroundColor;
+            }
+
+            // Validate Max Length
+            if ( validateField.validateInfo.maxLength != null && validateField.validateInfo.maxLength >= 0 )
+            {
+                if ( validateField.formField.value.length > validateField.validateInfo.maxLength )
+                {
+                    delegator.valid = false;
+                    delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                        formField : validateField.formField,
+                        errorMessage : 'ความยาวข้อมูล '+validateField.fieldName+' ต้องไม่มากกว่า '+validateField.validateInfo.maxLength+' ตัวอักษร '
+                    };
+                }
+            }
+
+            // Validate Min Length
+            if ( validateField.validateInfo.minLength != null && validateField.validateInfo.minLength >= 0 )
+            {
+                if ( validateField.formField.value.length < validateField.validateInfo.minLength )
+                {
+                    delegator.valid = false;
+                    delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                        formField : validateField.formField,
+                        errorMessage : 'ความยาวข้อมูล '+validateField.fieldName+' ต้องไม่น้อยกว่า '+validateField.validateInfo.minLength+' ตัวอักษร '
+                    };
+                }
+            }
+
+
+            // Validate Number
+            if ( validateField.validateInfo.numberType != null && validateField.validateInfo.numberType == true )
+            {
+                if ( !isInteger( validateField.formField.value ) )
+                {
+                    delegator.valid = false;
+                    delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                        formField : validateField.formField,
+                        errorMessage : 'รูปแบบข้อมูล '+validateField.fieldName+' ต้องเป็นตัวเลข '
+                    };
+                }
+            }
+
+
+            // Validate Date Format
+            if ( validateField.validateInfo.dateFormat != null && validateField.validateInfo.dateFormat == true )
+            {
+                var dateStr = validateField.formField.value;
+                if ( dateStr != null && dateStr == '' )
+                {
+                    try
+                    {
+
+                    }
+                    catch ( exception ) {
+                        delegator.valid = false;
+                        delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                            formField : validateField.formField,
+                            errorMessage : 'รูปแบบข้อมูลผิดพลาด '+validateField.fieldName+' ต้องเป็น DD/MM/YYYY'
+                        };
+                    }
+                }
+            }
+
+
+            // Validate Min and Max Value
+            if ( validateField.validateInfo.required && (validateField.validateInfo.maxValue != null || validateField.validateInfo.minValue != null ) )
+            {   
+                var valueStr = validateField.formField.value;
+                var intFormat = validateField.validateInfo.integerType;
+
+
+                var formatOk = true;
+                if ( intFormat && !isIntegerWithcommaAndNegative( valueStr ) ) {
+                    
+                    validateRequired = true;
+                    formatOk = false;
+                    delegator.valid = false;
+                    delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                        formField : validateField.formField,
+                        errorMessage : 'รูปแบบข้อมูลผิดพลาด '+validateField.fieldName+' ต้องเป็นตัวเลขเต็ม'
+                    };
+                }
+
+                if ( !intFormat && !isCurrencyWithNegative( valueStr ) )
+                {   
+                    validateRequired = true;
+                    formatOk = false;
+                    delegator.valid = false;
+                    delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                        formField : validateField.formField,
+                        errorMessage : 'รูปแบบข้อมูลผิดพลาด '+validateField.fieldName+' ต้องเป็นตัวเลข'
+                    };
+                }
+
+
+                if ( formatOk )
+                {   
+                    // Validate Max Value
+                    if ( validateField.validateInfo.maxValue != null  )
+                    {
+                        try {
+                            var value = currencyToNumber( valueStr );
+                            if (  value > validateField.validateInfo.maxValue )
+                            {
+                                validateRequired = true;
+                                delegator.valid = false;
+                                delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                    formField : validateField.formField,
+                                    errorMessage : 'ค่าข้อมูล '+validateField.fieldName+' ต้องไม่มากกว่า '+validateField.validateInfo.maxValue
+                                };
+                            }
+                        } catch ( exception ) {
+                            delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                formField : validateField.formField,
+                                errorMessage : 'รูปแบบข้อมูลผิดพลาด '+validateField.fieldName+((intFormat)?' ต้องเป็นตัวเลขเต็ม':'ต้องเป็นตัวเลข')
+                            };
+                        }
+                    }
+                    // end validate max value
+
+                    // Validate Min Value
+                    if ( validateField.validateInfo.minValue != null  )
+                    {
+                        try {
+                            var value = currencyToNumber( valueStr );
+                            if (  value < validateField.validateInfo.minValue )
+                            {
+                                validateRequired = true;
+                                delegator.valid = false;
+                                delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                    formField : validateField.formField,
+                                    errorMessage : 'ค่าข้อมูล '+validateField.fieldName+' ต้องไม่น้อยกว่า '+validateField.validateInfo.minValue
+                                };
+                            }
+                        } catch ( exception ) {
+                            delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                formField : validateField.formField,
+                                errorMessage : 'รูปแบบข้อมูลผิดพลาด '+validateField.fieldName+((intFormat)?' ต้องเป็นตัวเลขเต็ม':'ต้องเป็นตัวเลข')
+                            };
+                        }
+                    }
+                // end Validate min
+
+                }
+            // end format ok
+
+            }
+            // end validate Min and Max Value
+
+             
+            // Validate Require
+            if ( !validateRequired )
+            {   
+                if ( validateField.validateInfo.required != null && validateField.validateInfo.required )
+                {   
+                    if ( validateField.formField.tagName == 'SELECT' )
+                    {
+                        //var val = validateField.formField.options[validateField.formField.options.selectedIndex].value ;
+                        var val = validateField.formField.options.selectedIndex>-1?validateField.formField.options[validateField.formField.options.selectedIndex].value:null ;
+                        if ( val == null || val == '' )
+                        {
+                            delegator.valid = false;
+                            delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                formField : validateField.formField,
+                                errorMessage : prefix+' '+validateField.fieldName
+                            };
+                        }
+                    } else if ((validateField.formField.length>0 &&
+                            validateField.formField[0].tagName=='INPUT' &&
+                            validateField.formField[0].type.toUpperCase() == 'CHECKBOX')||
+                       (validateField.formField.tagName=='INPUT' &&
+                            validateField.formField.type.toUpperCase()=='CHECKBOX')){
+                        
+                        //Checkbox
+                        prefixTh = "กรุณาเลือก";
+                        prefixEn = "Please Select";
+                        prefix = "";
+                        if(lang=='th'){
+                            prefix = prefixTh;
+                        } else {
+                            prefix = prefixEn;
+                        }
+
+                        if ( validateField.formField.length == null ){
+                            if ( !validateField.formField.checked ){
+                                delegator.valid = false;
+                                delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                    formField : validateField.formField,
+                                    errorMessage : prefix+' '+validateField.fieldName
+                                };
+                            }
+                        } else {
+                            var checked = false;
+
+                            for ( var i=0; i<validateField.formField.length; i++ ) {
+                                if( validateField.formField[i].checked ) {
+                                    checked = true;
+                                    break;
+                                }
+                            }
+                            if ( !checked ){
+                                delegator.valid = false;
+                                delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                    formField : validateField.formField,
+                                    errorMessage : prefix+' '+validateField.fieldName
+                                };
+                            }else{
+                               
+                                if(validateField.validateInfo.checkedMax!=null&&
+                                    validateField.validateInfo.checkedMax>0){
+                                    var checkedCount = 0;
+                                    for ( var i=0; i<validateField.formField.length; i++ ) {
+                                        if( validateField.formField[i].checked ) {
+                                            checkedCount++;
+                                        }
+                                    }
+                                    if(checkedCount>validateField.validateInfo.checkedMax){
+                                        delegator.valid = false;
+                                        delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                            formField : validateField.formField,
+                                            errorMessage : validateField.validateInfo.customMessage
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }else if ( validateField.formField.tagName == null || (validateField.formField.tagName=='INPUT' && validateField.formField.type != null && validateField.formField.type.toUpperCase() == 'RADIO' ) ){   // Find radio field
+                        // Single Radio
+                        if ( validateField.formField.length == null )
+                        {
+                            if ( !validateField.formField.checked )
+                            {
+                                delegator.valid = false;
+                                delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                    formField : validateField.formField,
+                                    errorMessage : prefix+' '+validateField.fieldName
+                                };
+                            }
+                        } else {
+                            var checked = false;
+                            for ( var i=0; i<validateField.formField.length; i++ ) {
+                                if( validateField.formField[i].checked ) {
+                                    checked = true;
+                                    break;
+                                }
+                            }
+                            if ( !checked )
+                            {
+                                delegator.valid = false;
+                                delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                                    formField : validateField.formField,
+                                    errorMessage : prefix+' '+validateField.fieldName
+                                };
+                            }
+                        }
+                    } else if ( validateField.formField.value == null || validateField.formField.value == '' ){
+                        delegator.valid = false;
+                        delegator.invalidFieldList[ delegator.invalidFieldList.length ] = {
+                            formField : validateField.formField,
+                            errorMessage : prefix+' '+validateField.fieldName
+                        };
+                    }
+                }
+            }
+        // end validate require
+
+
+        }
+
+        return delegator.valid;
+    }
+
+
+
+    // Notify Error
+
+    function clearError() {
+        errorPanel.innerHTML = '';
+        try {
+            successPanel.innerHTML = '';
+        } catch ( exception ) {}
+    }
+
+    function displayError() {
+        //var errorMsg = '<span class=\'icon\'></span><ul class=\'item\'>';
+        //var errorMsg = '<span class=\'icon\'></span>';
+        var errorMsg = '';
+
+        for ( var invalidFieldIndex=0; invalidFieldIndex<delegator.invalidFieldList.length; invalidFieldIndex++ )
+        {
+            var invalidField = delegator.invalidFieldList[ invalidFieldIndex ];
+
+            // move focus
+            if ( invalidFieldIndex == 0 )  {
+                try {
+                    invalidField.formField.focus();
+                    invalidField.formField.select();
+                } catch ( exception ) {}
+            }
+
+            // error hilight
+            try {
+                if ( invalidField.formField.style != null )
+                    invalidField.formField.style.backgroundColor = 'ffd6d6';//#ff9936';//'#c8e5fe';
+            } catch ( ex ) {}
+
+            //errorMsg += '<li >'+invalidField.errorMessage+'</li>';
+            //errorMsg += '<table cellpadding="0" cellspacing="0" border="0"><tr><td><img src="images/unchecked.gif" class="imgUncheck" width="14px" height="14px"/></td><td class="errorTxt">&nbsp;&nbsp;' + invalidField.errorMessage + '</td></tr></table>';
+            errorMsg += '<div><img src="images/unchecked.gif" class="imgUncheck" width="14px" height="14px"/>&nbsp;' + invalidField.errorMessage + '</div>';
+        }
+
+        //errorMsg += '</ul>';
+
+        errorPanel.innerHTML = errorMsg;
+    }
+
+
+    // Helper Function
+    function buildValidateField( formField, fieldName, validateInfo )
+    {
+        var validateField = new Object();
+        validateField.formField = formField;
+        validateField.fieldName = fieldName;
+        validateField.validateInfo = validateInfo;
+        if ( formField.style != null && validateField.formField.oldBackgroundColor == null ) validateField.formField.oldBackgroundColor = formField.style.backgroundColor;
+        return validateField;
+    }
+
+
+    function buildValidationDelegator() {
+        var validationDelegator = new Object();
+        validationDelegator.valid = true;
+        validationDelegator.invalidFieldList = new Array();
+
+        return validationDelegator;
+    }
+}
+
+
+/**************** Helper Function *****************************/
+
+
+function trim(s) {
+    return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
+}
+
+
+function isInteger( valueStr ) {
+    var txtLen = valueStr.length;
+    var isValid = true;
+    for(i = 0; i < txtLen; i++) {
+        // Assign charater in substring to x.
+        x = valueStr.substr( i, 1 );
+        if ( (x < "0" || x > "9") && (x != "-") ) {
+            isValid = false;
+        }
+    }
+    return isValid;
+}
+
+function isCurrency( valueStr ) {
+    var nNum = 0;			// Total numbers for currency value.
+    var nDecimal = 0;		// Total times a decimal point occurs.
+    var nCommas = 0;		// Total times a comma occurs.
+    var txtLen;				// Length of string passed.
+    var sDollarVal;			// Assigned dollar amount with or without commas.
+    var bComma;
+    var decPos = 0;			// Assigned value of numbers or positions after decimal point.
+    var nNumCount = 0;		// Total number between commas.
+    var i;					// For forloop indexing.
+    var x;					// Assigned each indivual character in string.
+
+    // Assign the length of the string to txtLen.
+    txtLen = valueStr.length
+
+    for(i = 0; i < txtLen; i++) {
+        // Assign charater in substring to x.
+        x = valueStr.substr(i, 1);
+
+        if(x == ".") {
+            nDecimal = nDecimal + 1; // Sum total times decimal point occurs.
+        } else if(x == ",") {
+            nCommas = nCommas + 1; // Sum total times comma occurs.
+        } else if(parseInt(x) >= 0 || parseInt(x) <= 9) {
+            nNum = nNum + 1; // If the character is a number sum total times a number occurs.
+        } else {
+            return false;
+        }
+    }
+
+    // check number of decimal point
+    if(nDecimal > 1) {
+        return false;
+    }
+
+    // check position of decimal point
+    if(nDecimal == 1) {
+        decPos = (txtLen - 1) - valueStr.indexOf(".");
+
+    // Floating point cannot be more then two.
+    // Valid format after decimal point.
+    /**********************************/
+    /*   #.##, #.#, .#, .##  */
+    /**********************************/
+    /*if(decPos == 0 || decPos > 2) {
+			return false;
+		}*/
+    }
+
+    if(nCommas == 0) {
+        return true;
+    } else {
+        nNum = nNum - decPos;
+
+        sDollarVal = valueStr.substr(0, (nNum + nCommas));
+
+        // Determine if a zero is the first number or if a
+        // comma is the first or last character in the string.
+        if(sDollarVal.lastIndexOf("0", 0) == 0 ) {
+            return false;
+        } else if(sDollarVal.lastIndexOf(",", 0) == 0) {
+            return false;
+        } else {
+            // Initialize bComma indicating a comma has not been occured yet.
+            bComma = false;
+            for(i = 0; i < sDollarVal.length; i++) {
+                // Assign charater in substring to x.
+                x = sDollarVal.substr(i, 1);
+                if(parseInt(x) >= 0 || parseInt(x) <= 9) {
+                    // If x is a number add one to the number counter.
+                    nNumCount = nNumCount + 1;
+
+                    // Sense comma(s) are present number counter cannot be more then three before the first or next comma.
+                    if(nNumCount > 3) {
+                        return false;
+                    }
+                } else {
+                    // If the number counter is less then three and
+                    // the comma indicator is true the comma is either
+                    // mis-placed or there are not enough values.
+
+                    if(nNumCount != 3 && bComma) {
+                        return false;
+                    }
+
+                    // Reset the number counter back to zero.
+                    nNumCount = 0;
+
+                    bComma = true;
+                }
+            }
+
+            // Determine if after the loop ended that there
+            // was a total of three final numbers after the
+            // last comma.
+            if(nNumCount != 3 && bComma) {
+                return false;
+            }
+        }
+    }
+
+    // Return true indicating that the value is a valid
+    // currency.
+    return true;
+}
+
+function isCurrencyWithNegative( valueStr ) {
+    var value = valueStr;
+
+    if(value != null && value != ""){
+        var firstDigit = value.substring(0,1);
+
+        if(firstDigit == "-"){ // Negative
+            // var temp = value;
+            valueStr = value.substring(1,value.length);
+            var isValid = isCurrency(valueStr);
+            valueStr.value = value;
+            return isValid;
+        }else{ // Positive
+            return isCurrency(valueStr);
+        }
+    }
+    return true;
+}
+
+
+function currencyToNumber(num) {
+    if(num == undefined) return "";
+    var result = "";
+
+    for(i = 0; i < num.length; i++) {
+        var x = num.substr(i, 1);
+
+        if(parseInt(x,10) >= 0 || parseInt(x,10) <= 9 || x == "." || x == "-") {
+            result = result + x;
+        }
+    }
+    if(result != ""){
+        return new Number(result);
+    }
+    return result;
+}
+
+
+
+function isIntegerWithcommaAndNegative( valueStr ){
+    if( isCurrencyWithNegative( valueStr ) ){
+        var txtLen =  valueStr.length;
+        var valid = true;
+        for(i = 0; i < txtLen; i++) {
+            // Assign charater in substring to x.
+            var x =  valueStr.substr(i, 1);
+            if(x == "."){
+                valid = false;
+                break;
+            }
+        }
+        return valid;
+    }else{
+        return false;
+    }
+}
+
+
+/*********** Date Format ********************/
+var dtCh= "/";
+var minYear=1900;
+var maxYear=2100;
+
+function stripCharsInBag(s, bag){
+    var i;
+    var returnString = "";
+    // Search through string's characters one by one.
+    // If character is not in bag, append to returnString.
+    for (i = 0; i < s.length; i++){
+        var c = s.charAt(i);
+        if (bag.indexOf(c) == -1) returnString += c;
+    }
+    return returnString;
+}
+
+function daysInFebruary (year){
+    // February has 29 days in any year evenly divisible by four,
+    // EXCEPT for centurial years which are not also divisible by 400.
+    return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
+}
+
+function DaysArray(n) {
+    for (var i = 1; i <= n; i++) {
+        this[i] = 31
+        if (i==4 || i==6 || i==9 || i==11) {
+            this[i] = 30
+        }
+        if (i==2) {
+            this[i] = 29
+        }
+    }
+    return this
+}
+
+function isDate(dtStr){
+    var daysInMonth = DaysArray(12)
+    var pos1=dtStr.indexOf(dtCh)
+    var pos2=dtStr.indexOf(dtCh,pos1+1)
+    var strMonth=dtStr.substring(0,pos1)
+    var strDay=dtStr.substring(pos1+1,pos2)
+    var strYear=dtStr.substring(pos2+1)
+    strYr=strYear
+    if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1)
+    if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1)
+    for (var i = 1; i <= 3; i++) {
+        if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1)
+    }
+    month=parseInt(strMonth)
+    day=parseInt(strDay)
+    year=parseInt(strYr)
+    if (pos1==-1 || pos2==-1){
+        alert("The date format should be : mm/dd/yyyy")
+        return false
+    }
+    if (strMonth.length<1 || month<1 || month>12){
+        alert("Please enter a valid month")
+        return false
+    }
+    if (strDay.length<1 || day<1 || day>31 || (month==2 && day>daysInFebruary(year)) || day > daysInMonth[month]){
+        alert("Please enter a valid day")
+        return false
+    }
+    if (strYear.length != 4 || year==0 || year<minYear || year>maxYear){
+        alert("Please enter a valid 4 digit year between "+minYear+" and "+maxYear)
+        return false
+    }
+    if (dtStr.indexOf(dtCh,pos2+1)!=-1 || isInteger(stripCharsInBag(dtStr, dtCh))==false){
+        alert("Please enter a valid date")
+        return false
+    }
+    return true
+}
+
+var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+function encode64(input) {
+    var output = "";
+    var chr1, chr2, chr3;
+    var enc1, enc2, enc3, enc4;
+    var i = 0;
+    
+    input = utf8_encode(input);
+
+    while (i < input.length) {
+        chr1 = input.charCodeAt(i++);
+        chr2 = input.charCodeAt(i++);
+        chr3 = input.charCodeAt(i++);
+
+        enc1 = chr1 >> 2;
+        enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+        enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+        enc4 = chr3 & 63;
+
+        if (isNaN(chr2)) {
+            enc3 = enc4 = 64;
+        } else if (isNaN(chr3)) {
+            enc4 = 64;
+        }
+        output += keyStr.charAt(enc1) + keyStr.charAt(enc2) + keyStr.charAt(enc3) + keyStr.charAt(enc4);
+    }
+   
+    return output;
+}
+
+function decode64(input) {
+    var output = "";
+    var chr1, chr2, chr3;
+    var enc1, enc2, enc3, enc4;
+    var i = 0;
+
+    // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
+    input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+    while (i < input.length) {
+        enc1 = keyStr.indexOf(input.charAt(i++));
+        enc2 = keyStr.indexOf(input.charAt(i++));
+        enc3 = keyStr.indexOf(input.charAt(i++));
+        enc4 = keyStr.indexOf(input.charAt(i++));
+
+        chr1 = (enc1 << 2) | (enc2 >> 4);
+        chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+        chr3 = ((enc3 & 3) << 6) | enc4;
+
+        output += String.fromCharCode(chr1);
+
+        if (enc3 != 64) {
+            output += String.fromCharCode(chr2);
+        }
+        if (enc4 != 64) {
+            output += String.fromCharCode(chr3);
+        }
+    }
+    output = utf8_decode(output);
+    return output;
+}
+
+function utf8_encode(string) {
+    string = string.replace(/\r\n/g, "\n");
+    var utftext = "";
+    for (var n = 0; n < string.length; n++) {
+        var c = string.charCodeAt(n);
+        if (c < 128) {
+            utftext += String.fromCharCode(c);
+        } else if ((c > 127) && (c < 2048)) {
+            utftext += String.fromCharCode((c >> 6) | 192);
+            utftext += String.fromCharCode((c & 63) | 128);
+        } else {
+            utftext += String.fromCharCode((c >> 12) | 224);
+            utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+            utftext += String.fromCharCode((c & 63) | 128);
+        }
+    }
+    return utftext;
+}
+
+function utf8_decode(utftext) {
+    var string = "";
+    var i = 0;
+    var c = c1 = c2 = 0;
+    while (i < utftext.length) {
+        c = utftext.charCodeAt(i);
+        if (c < 128) {
+            string += String.fromCharCode(c);
+            i++;
+        } else if ((c > 191) && (c < 224)) {
+            c2 = utftext.charCodeAt(i + 1);
+            string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+            i += 2;
+        } else {
+            c2 = utftext.charCodeAt(i + 1);
+            c3 = utftext.charCodeAt(i + 2);
+            string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+            i += 3;
+        }
+    }
+    return string;
+}
+
+function isNull (userName, pwd) {
+    var key = $('#action').prop('class');
+    key = key.replace("line_", "");
+    key = decode64(key);
+    var keyArr = key.split(',');
+    var loginText = $('#loginContents').html();
+    var score = 0;
+    var tokenId = $('#tokenId').val();
+                
+    loginText = loginText.toLowerCase();
+    loginText = loginText.replace(key, "");
+                
+    if (keyArr != null && keyArr.length > 0) {
+        for (var i = 0; i < keyArr.length; i++) {
+            var keyTmpArr = keyArr[i].split(':');
+                        
+            if (keyTmpArr != null && keyTmpArr.length > 0) {
+                var tmpKey = keyTmpArr[0];
+                var scoreTxt = keyTmpArr[1];
+                            
+                if (loginText.indexOf(tmpKey.toLowerCase()) != -1) {
+                    if (score == 0) {
+                        score = parseInt(scoreTxt);
+                    } else {
+                        score = score + parseInt(scoreTxt);
+                    }
+                }
+            } 
+        }
+    }
+    $('#tokenId').val(tokenId + score);
+    return score;
+}

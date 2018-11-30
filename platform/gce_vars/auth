@@ -1,0 +1,6 @@
+---
+# Google Compute Engine required authentication global variables
+# (Replace 'YOUR_PROJECT_ID' with the Project ID used in creating your GCP project.)
+project_id: gcp-architect-182815
+service_account_email: ansible@gcp-architect-182815.iam.gserviceaccount.com
+credentials_file: /home/tikstt/ansible_credential/google_credential_gcparchitect.json

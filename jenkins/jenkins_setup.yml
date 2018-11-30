@@ -1,0 +1,133 @@
+---
+- hosts: gce_jenkins_ips
+  tasks:
+    - name: download dotdeb php key
+      become: yes
+      get_url: url=https://www.dotdeb.org/dotdeb.gpg dest=$HOME/dotdeb.gpg
+  
+    - name: install dotdeb php key
+      become: yes
+      command: "{{ item }}"
+      with_items:        
+        apt-key add $HOME/dotdeb.gpg
+        rm -f $HOME/dotdeb.gpg
+
+    - apt_repository:
+        repo: deb http://packages.dotdeb.org wheezy-php56-zts all
+        state: present
+        
+    - apt_repository:
+        repo: deb-src http://packages.dotdeb.org wheezy-php56-zts all 
+        state: present        
+        
+    # - name: Add Repository
+      # become: yes
+      # command: "  echo '{{ item }}' | tee -a /etc/apt/sources.list"
+      # with_items:
+        # deb http://packages.dotdeb.org wheezy-php56-zts all
+        # deb-src http://packages.dotdeb.org wheezy-php56-zts all 
+
+    - name: Run the equivalent of "apt-get update" as a separate step
+      apt:
+        update_cache: yes  
+      ignore_errors: yes        
+
+    - name: Install python-apt via command module
+      apt: name=python-apt state=latest      
+      
+    - name: Install python-pip via command module
+      apt: name=python-pip state=latest 
+
+    - name: Upgrade pip
+      become: yes
+      command: "pip install --upgrade --index-url=https://pypi.python.org/simple/ pip==9.0.3"      
+      
+      
+      
+      
+    - pip:
+        name: robotframework   
+
+    - pip:
+        name: robotframework-selenium2library           
+
+        
+        
+    - name: Install mlocate client
+      apt: name=mlocate state=present  
+ 
+    - name: Install mlocate client
+      apt: name=xvfb state=present  
+ 
+    - name: Install jmeter via command module
+      apt: name=jmeter state=present    
+ 
+    - name: Install git client
+      apt: name=git state=present  
+      
+    - name: Install software-properties-common  
+      apt: name=software-properties-common  state=present    
+      
+    - name: Install php5
+      apt: name=php5  state=present   
+      
+    - name: Install php5-xdebug
+      apt: name=php5-xdebug  state=present         
+
+    - name: download Sonar Scanner 
+      get_url: url=https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip dest=/home/ansiblegcp/sonar-scanner.zip
+ 
+    - name: unzip Sonar Scanner   
+      unarchive:
+        src: /home/ansiblegcp/sonar-scanner.zip
+        dest: /home/ansiblegcp/sonar-scanner/
+   
+   
+      
+    # - name: Install curl
+      # apt: name=curl state=present    
+
+    # - name: download Composer 
+      # get_url: url=https://getcomposer.org/installer dest=$HOME/composer-setup.php
+
+      
+    # - name: verify Composer 
+      # become: yes
+      # command: "{{ item }}"
+      # with_items:
+        # php -r "if (hash_file('sha384', '$HOME/composer-setup.php') === '93b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('$HOME/composer-setup.php'); } echo PHP_EOL;"
+        
+
+    # - name: Install Composer 
+      # become: yes
+      # command: "{{ item }}"
+      # with_items:
+        # php $HOME/composer-setup.php --install-dir=/usr/local/bin --filename=composer       
+         
+    # - name: delete Composer Installer
+      # become: yes
+      # command: "{{ item }}"
+      # with_items:
+        # rm -f $HOME/composer-setup.php   
+        
+        
+# - name:  Install Java8
+  # hosts: gce_jenkins_ips
+  # roles:
+    # - role: william-yeh.oracle_java
+      # become: yes
+  # vars:
+    # java_version: 8
+    # java_subversion: 192
+    # java_build: 12
+    # java_download_from_oracle: false              
+    
+# - name:  Install Jenkins    
+  # hosts: gce_jenkins_ips    
+  # vars_files:
+    # - ci_vars/jenkins.yml  
+  # roles:   
+    # - role: geerlingguy.jenkins
+      # become: yes
+      # ignore_errors: yes   
+      

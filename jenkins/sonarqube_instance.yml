@@ -1,0 +1,38 @@
+---
+# compute-video-demo-ansible
+- name: Create sonarqube instances
+  hosts: local
+  connection: local
+  gather_facts: False
+  vars_files:
+    - gce_vars/auth
+    - gce_vars/machines
+    - gce_vars/jenkinszone
+    
+  tasks:
+    - name: Bring up the sonarqube instances
+      gce:
+        instance_names: "{{ sonarqube_name }}"
+        machine_type: "{{ machine_type }}"
+        image: "{{ image }}"
+        zone: "{{ jenkins_zone }}"
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
+      register: sonarqube_host
+    - name: Allow HTTP 9000 for sonarqube traffic
+      gce_net:
+        fwname: all-http-9000-sonarqube
+        name: default
+        allowed: tcp:9000
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
+      
+  post_tasks:
+    - name: Wait for SSH for sonarqube instances
+      wait_for: delay=1 host={{ item.public_ip }} port=22 state=started timeout=60
+      with_items: "{{ sonarqube_host.instance_data }}"
+    - name: Save host data for sonarqube zone
+      add_host: hostname={{ item.public_ip }} groupname=gce_sonarqube_ips
+      with_items: "{{ sonarqube_host.instance_data }}"  

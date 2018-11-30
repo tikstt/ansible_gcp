@@ -1,0 +1,28 @@
+# Example Playbook
+- name: Compute Engine Create Instance Group
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: create a network
+      gcp_compute_network:
+          name: "network-instancegroup"
+          project: "{{ project_id }}"
+          auth_kind: "{{ auth_kind }}"
+          service_account_file: "{{ credentials_file }}"
+          state: present
+      register: network
+
+    - name: create a instance group
+      gcp_compute_instance_group:
+          name: "group1"
+          named_ports:
+          - name: ansible
+            port: 1234
+          - name: group1http
+            port: 80            
+          network: "{{ network }}"
+          zone: us-central1-a
+          project: "{{ project_id }}"
+          auth_kind: "{{ auth_kind }}"
+          service_account_file: "{{ credentials_file }}"
+          state: present

@@ -1,0 +1,48 @@
+---
+# compute-video-demo-ansible
+- name: Create Jenkins instances
+  hosts: local
+  connection: local
+  gather_facts: False
+  vars_files:
+    - gce_vars/auth
+    - gce_vars/machines
+    - gce_vars/jenkinszone
+    
+  tasks:
+    - name: Bring up the jenkins instances
+      gce:
+        instance_names: "{{ jenkins_name }}"
+        machine_type: "{{ machine_type }}"
+        image: "{{ image }}"
+        zone: "{{ jenkins_zone }}"
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
+      register: jenkins_host
+      #tags: [ 'jenkins' ]
+    - name: Allow HTTP 8080 for jenkins traffic
+      gce_net:
+        fwname: all-http-jenkins
+        name: default
+        allowed: tcp:8080
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"     
+    - name: Allow HTTP 36310 for jenkins slave traffic
+      gce_net:
+        fwname: jenkins-slave-fw
+        name: default
+        allowed: tcp:36310
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}" 
+        
+  post_tasks:
+    - name: Wait for SSH for jenkins instances
+      wait_for: delay=1 host={{ item.public_ip }} port=22 state=started timeout=30
+      with_items: "{{ jenkins_host.instance_data }}"
+    - name: Save host data for first zone
+      add_host: hostname={{ item.public_ip }} groupname=gce_jenkins_ips
+      with_items: "{{ jenkins_host.instance_data }}"
+      

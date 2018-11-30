@@ -1,0 +1,12 @@
+---
+- hosts: all
+  connection: local
+  tasks:
+   - name: Install Nginx
+     apt: pkg=nginx state=present update_cache=true
+     notify:
+      - Start Nginx
+      
+  handlers:
+   - name: Start Nginx
+     service: name=nginx state=started

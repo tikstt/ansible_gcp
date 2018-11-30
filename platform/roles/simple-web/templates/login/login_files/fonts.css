@@ -1,0 +1,134 @@
+@font-face {
+    font-family: 'DBThaiTextX';
+    src: url('fonts/dbThaiTextX/DBThaiTextX.eot');
+    src: url('fonts/dbThaiTextX/DBThaiTextX.eot?#iefix') format('embedded-opentype'),
+         url('fonts/dbThaiTextX/DBThaiTextX.woff2') format('woff2'),
+         url('fonts/dbThaiTextX/DBThaiTextX.woff') format('woff'),
+         url('fonts/dbThaiTextX/DBThaiTextX.ttf') format('truetype'),
+         url('fonts/dbThaiTextX/DBThaiTextX.svg#DBThaiTextX') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DBThaiTextXBd';
+    src: url('fonts/dbThaiTextX/DBThaiTextXBd.eot');
+    src: url('fonts/dbThaiTextX/DBThaiTextXBd.eot?#iefix') format('embedded-opentype'),
+         url('fonts/dbThaiTextX/DBThaiTextXBd.woff2') format('woff2'),
+         url('fonts/dbThaiTextX/DBThaiTextXBd.woff') format('woff'),
+         url('fonts/dbThaiTextX/DBThaiTextXBd.ttf') format('truetype'),
+         url('fonts/dbThaiTextX/DBThaiTextXBd.svg#DBThaiTextXBd') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DBThaiTextXBdIt';
+    src: url('fonts/dbThaiTextX/DBThaiTextXBdIt.eot');
+    src: url('fonts/dbThaiTextX/DBThaiTextXBdIt.eot?#iefix') format('embedded-opentype'),
+         url('fonts/dbThaiTextX/DBThaiTextXBdIt.woff2') format('woff2'),
+         url('fonts/dbThaiTextX/DBThaiTextXBdIt.woff') format('woff'),
+         url('fonts/dbThaiTextX/DBThaiTextXBdIt.ttf') format('truetype'),
+         url('fonts/dbThaiTextX/DBThaiTextXBdIt.svg#DBThaiTextXBdIt') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DBThaiTextXItalic';
+    src: url('fonts/dbThaiTextX/DBThaiTextXItalic.eot');
+    src: url('fonts/dbThaiTextX/DBThaiTextXItalic.eot?#iefix') format('embedded-opentype'),
+         url('fonts/dbThaiTextX/DBThaiTextXItalic.woff2') format('woff2'),
+         url('fonts/dbThaiTextX/DBThaiTextXItalic.woff') format('woff'),
+         url('fonts/dbThaiTextX/DBThaiTextXItalic.ttf') format('truetype'),
+         url('fonts/dbThaiTextX/DBThaiTextXItalic.svg#DBThaiTextXItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DBThaiTextXLi';
+    src: url('fonts/dbThaiTextX/DBThaiTextXLi.eot');
+    src: url('fonts/dbThaiTextX/DBThaiTextXLi.eot?#iefix') format('embedded-opentype'),
+         url('fonts/dbThaiTextX/DBThaiTextXLi.woff2') format('woff2'),
+         url('fonts/dbThaiTextX/DBThaiTextXLi.woff') format('woff'),
+         url('fonts/dbThaiTextX/DBThaiTextXLi.ttf') format('truetype'),
+         url('fonts/dbThaiTextX/DBThaiTextXLi.svg#DBThaiTextXLi') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DBThaiTextXLiIt';
+    src: url('fonts/dbThaiTextX/DBThaiTextXLiIt.eot');
+    src: url('fonts/dbThaiTextX/DBThaiTextXLiIt.eot?#iefix') format('embedded-opentype'),
+         url('fonts/dbThaiTextX/DBThaiTextXLiIt.woff2') format('woff2'),
+         url('fonts/dbThaiTextX/DBThaiTextXLiIt.woff') format('woff'),
+         url('fonts/dbThaiTextX/DBThaiTextXLiIt.ttf') format('truetype'),
+         url('fonts/dbThaiTextX/DBThaiTextXLiIt.svg#DBThaiTextXLiIt') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Didot';
+    src: url('fonts/didot/Didot.eot');
+    src: url('fonts/didot/Didot.eot?#iefix') format('embedded-opentype'),
+         url('fonts/didot/Didot.woff2') format('woff2'),
+         url('fonts/didot/Didot.woff') format('woff'),
+         url('fonts/didot/Didot.ttf') format('truetype'),
+         url('fonts/didot/Didot.svg#Didot') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+41-5A, U+61-7A, U+C0-FF;
+}
+
+@font-face {
+    font-family: 'DidotBold';
+    src: url('fonts/didot/DidotBold.eot');
+    src: url('fonts/didot/DidotBold.eot?#iefix') format('embedded-opentype'),
+         url('fonts/didot/DidotBold.woff2') format('woff2'),
+         url('fonts/didot/DidotBold.woff') format('woff'),
+         url('fonts/didot/DidotBold.ttf') format('truetype'),
+         url('fonts/didot/DidotBold.svg#DidotBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+41-5A, U+61-7A, U+C0-FF;
+}
+
+@font-face {
+    font-family: 'DidotItalic';
+    src: url('fonts/didot/DidotItalic.eot');
+    src: url('fonts/didot/DidotItalic.eot?#iefix') format('embedded-opentype'),
+         url('fonts/didot/DidotItalic.woff2') format('woff2'),
+         url('fonts/didot/DidotItalic.woff') format('woff'),
+         url('fonts/didot/DidotItalic.ttf') format('truetype'),
+         url('fonts/didot/DidotItalic.svg#DidotItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+41-5A, U+61-7A, U+C0-FF;
+}
+
+@font-face {
+    font-family: 'GothamRoundedLight';
+    src: url('fonts/gotham/GothamRoundedLight.eot');
+    src: url('fonts/gotham/GothamRoundedLight.eot?#iefix') format('embedded-opentype'),
+         url('fonts/gotham/GothamRoundedLight.woff2') format('woff2'),
+         url('fonts/gotham/GothamRoundedLight.woff') format('woff'),
+         url('fonts/gotham/GothamRoundedLight.ttf') format('truetype'),
+         url('fonts/gotham/GothamRoundedLight.svg#GothamRoundedLight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FuturaHeavyBT';
+    src: url('fonts/futuraHeavyBT/FuturaHeavyBT.eot');
+    src: url('fonts/futuraHeavyBT/FuturaHeavyBT.eot?#iefix') format('embedded-opentype'),
+         url('fonts/futuraHeavyBT/FuturaHeavyBT.woff2') format('woff2'),
+         url('fonts/futuraHeavyBT/FuturaHeavyBT.woff') format('woff'),
+         url('fonts/futuraHeavyBT/FuturaHeavyBT.ttf') format('truetype'),
+         url('fonts/futuraHeavyBT/FuturaHeavyBT.svg#FuturaHeavyBT') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

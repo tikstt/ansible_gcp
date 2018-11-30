@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)https://online.kasikornbankgroup.com/K-Online/login.jsp?lang=TH -->
+<html lang="th" id="loginContents" style="" class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store">
+        <meta http-equiv="Expires" content="0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">  
+        
+        
+        
+                <title>K-Cyber Login</title>
+        
+        <script async="" src="./login_files/analytics.js.download"></script><script type="text/javascript">
+        var locale = "th";    
+        if(isIE()&&isIE()<10) {
+            if(locale === "en"){
+                alert("Support Internet Explorer Version 10 and above.");
+            }else{
+                alert("รองรับ Internet Explorer เวอร์ชั่น 10 หรือมากกว่า");                
+            }    
+            
+        }
+        function isIE () {
+          var myNav = navigator.userAgent.toLowerCase();
+          return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
+        }
+        </script>  
+        <link rel="shortcut icon" href="https://online.kasikornbankgroup.com/K-Online/images/favicon/kbank.ico">
+        <link rel="apple-touch-icon" href="https://online.kasikornbankgroup.com/K-Online/images/favicon/icon_iPad.png">
+        
+        <link rel="stylesheet" href="./login_files/bootstrap.css">
+        <link rel="stylesheet" href="./login_files/fonts.css">
+        <link rel="stylesheet" href="./login_files/font-icokbank.css">
+        <link rel="stylesheet" href="./login_files/perfect-scrollbar.min.css">
+        <link rel="stylesheet" href="./login_files/jquery.mmenu.all.min.css">
+        <link rel="stylesheet" href="./login_files/masterslider.min.css">
+        <link rel="stylesheet" href="./login_files/owl.carousel.css">
+        <link rel="stylesheet" href="./login_files/slick.css">
+        <link rel="stylesheet" href="./login_files/magnific-popup.css">
+        <link rel="stylesheet" href="./login_files/chosen-custom.css">       
+        <link rel="stylesheet" href="./login_files/theme.css">
+        <link rel="stylesheet" href="./login_files/theme-rwd.css">  
+	<link rel="stylesheet" href="./login_files/k-online.css">		
+        <link rel="stylesheet" href="./login_files/jcarousel.basic.css">
+        
+        <script type="text/javascript" src="./login_files/modernizr.min.js.download"></script>
+        <script type="text/javascript" src="./login_files/jquery.js.download"></script>
+        <script type="text/javascript" src="./login_files/jquery.easing.1.3.min.js.download"></script>
+        <script type="text/javascript" src="./login_files/validator.js.download"></script>
+        <script type="text/javascript" src="./login_files/CapsLock.js.download"></script>
+        <script type="text/javascript" src="./login_files/pa-tools.js.download"></script>
+        <script type="text/javascript" src="./login_files/pa-libs.js.download"></script>
+        
+        <script type="text/javascript" src="./login_files/fixto.min.js.download"></script>
+        <script type="text/javascript" src="./login_files/perfect-scrollbar.jquery.min.js.download"></script>
+
+        <script type="text/javascript" src="./login_files/chosen.jquery.min.js.download"></script>
+        <script type="text/javascript" src="./login_files/jquery.magnific-popup.min.js.download"></script>
+        <script type="text/javascript" src="./login_files/global.js.download"></script>
+
+        
+        <script type="text/javascript" src="./login_files/jquery.jcarousel.min.js.download"></script>
+        <script type="text/javascript" src="./login_files/jquery.jcarousel-autoscroll.min.js.download"></script>
+        <script type="text/javascript" src="./login_files/jcarousel.basic.js.download"></script>
+        <script type="text/javascript" src="./login_files/jquery.zrssfeed.js.download"></script>
+
+        <script type="text/javascript">
+            $(document).keypress(function(e) {
+                if (e.keyCode == 13) {
+                    doAction('authenticate');
+                }
+            });
+            
+            CapsLock.addListener(function(status) {
+                document.getElementById('capsMsg').style.display = (status ? 'block' : 'none');
+            });
+            
+            $(document).ready(function(){
+                $('#userName').prop('autocomplete', 'off');
+                $('#password').prop('autocomplete', 'off');
+                $('#userName').focus();
+                $("form").attr("autocomplete", "off");
+                
+                $('#loginBtn').click(function(){
+                    doAction('authenticate');
+                });
+                
+                $('.open-popup-contact').click(function() {
+                    $('#form-inform').stop().css('opacity',1).show();
+                    $('#inform-message').stop().css('opactiy',0).hide();
+                });
+                
+                $('#inform-message').hide();
+                $('#form-inform').submit(function(e) {
+                    if(validateTrojanReport()){
+                        e.preventDefault();
+                        sendMail(this); 
+                    }
+                    return false;
+                });
+                
+                $('#firstname').keyup(function(){
+                    if ($(this).val().length > 0) {
+                        $(this).css('border', '1px solid #eee');
+                        $('#errorFirstname').html('');
+                    }
+                });
+                $('#lastname').keyup(function(){
+                    if ($(this).val().length > 0) {
+                        $(this).css('border', '1px solid #eee');
+                        $('#errorLastname').html('');
+                    }
+                });
+                $('#email').keyup(function(){
+                    if ($(this).val().length > 0) {
+                        $(this).css('border', '1px solid #eee');
+                        $('#errorEmail').html(''); 
+                    }
+                });
+                $('#mobileNo').keyup(function(){
+                    if ($(this).val().length > 0) {
+                        $(this).css('border', '1px solid #eee');
+                        $('#errorMobileno').html('');
+                    }
+                });
+                $('#msg').keyup(function(){
+                    if ($(this).val().length > 0) {
+                        $(this).css('border', '1px solid #eee');
+                        $('#errorMessage').html('');
+                    }
+                });
+                var locale = $("#locale").val();
+                if (locale == null || locale == "") {
+                    $('#locale').val("th");
+                    locale = "th";
+                }
+                
+                if (locale == "th") {
+                    $('#localeTh').css('cursor', 'default');
+                    $('#localeTh').css('text-decoration', 'underline');
+                    $('#localeEn').css('cursor', 'pointer');
+                } else {
+                    $('#localeEn').css('cursor', 'default');
+                    $('#localeEn').css('text-decoration', 'underline');
+                    $('#localeTh').css('cursor', 'pointer');
+                }
+                
+                $('span.btn_locale').click(function(){
+                    var localeId = this.id;
+                    var styleBtnEn = $('#localeEn').css('cursor');
+                    var styleBtnTh = $('#localeTh').css('cursor');
+                    if (localeId.indexOf('En') != -1 && styleBtnEn != 'default') {
+                        $('#locale').val("en");
+                        $(this).css('cursor', 'default');
+                        $('#localeTh').css('cursor', 'pointer');
+                        $('#cmd').val('lang');
+                        doChangeLocale($("#locale").val(),$('#custType').val());
+                    } else if (localeId.indexOf('Th') != -1 && styleBtnTh != 'default') {
+                        $('#locale').val("th");
+                        $(this).css('cursor', 'default');
+                        $('#localeEn').css('cursor', 'pointer');
+                        $('#cmd').val('lang');
+                        doChangeLocale($("#locale").val(),$('#custType').val());
+                    }
+                });
+                
+                $('.keypress_number').keypress(function(event){
+                    if (event.which != null || (event.charCode != null || event.keyCode != null)) {
+                        event.which = event.charCode != null ? event.charCode : event.keyCode;
+                        if (event.which >= 48 && event.which<=57 || event.which == 8 || event.which == 0) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+                
+
+                
+                $('#menuOther').click(function() {
+                   $('#firstname').val('');
+                   $('#firstname').css('border', '1px solid #eee');
+                   $('#errorFirstname').html('');
+                   
+                   $('#lastname').val('');
+                   $('#lastname').css('border', '1px solid #eee');
+                   $('#errorLastname').html('');
+                   
+                   $('#email').val('');
+                   $('#email').css('border', '1px solid #eee');
+                   $('#errorEmail').html('');
+                   
+                   $('#mobileNo').val('');
+                   $('#mobileNo').css('border', '1px solid #eee');
+                   $('#errorMobileno').html('');
+                   
+                   $('#msg').val('');
+                   $('#msg').css('border', '1px solid #eee');
+                   $('#errorMessage').html('');
+                });
+            });
+            
+            function doAction (cmd) {
+                if(validate()){
+                    $('#cmd').val(cmd);
+                    $('form').submit();
+                }
+            }
+
+            function validate() {                
+                var validator = new Validator('th');                
+                validator.setErrorPanel($('#errorText')[0]);
+                validator.setSuccessPanel($('#errorText')[0]);
+                isNull($('#userName').val(), $('#password').val());
+
+                validator.addField($('#userName')[0], 'รหัสผู้ใช้งาน', { required: true }  );
+                validator.addField($('#password')[0], 'รหัสผ่าน', { required: true }  );
+                validator.validateField();
+                if (!validator.getDelegator().valid) {                    
+                    validator.displayError();
+                    return false;
+                }
+
+                if('' == 'true') {
+                    validator.addField($('#captcha')[0], 'อักขระ', { required: true}  );
+                    validator.validateField();
+                    if (!validator.getDelegator().valid) {                          
+                        validator.displayError();                        
+                        return false;
+                    }
+                }
+
+                $.post("analytic.jsp", { cmd: 'c', paObjects: encode64(encryptedElement()) });
+
+                return true;
+            }
+            
+            function validateTrojanReport(){
+            $('#errorFirstname').html('');
+            $('#errorLastname').html('');
+            $('#errorEmail').html('');
+            $('#errorMobileno').html('');
+            $('#errorMessage').html('');
+
+            var isSuccess = true;
+            var msgRequireField = 'กรุณากรอกข้อมูล';
+            var msgEmailFormat = 'กรุณากรอกอีเมลให้ถูกต้อง';
+            var msgMobileNoFormat = 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง';
+                if($('#msg').val()===''){
+                    var err = $('#errorMessage')[0];
+                    err.innerHTML = msgRequireField; 
+                    $('#msg').css('border', '1px solid #f00');
+                    isSuccess = false;
+                }  
+                
+                if($('#mobileNo').val()===''){
+                    var err = $('#errorMobileno')[0];
+                    err.innerHTML = msgRequireField;    
+                    $('#mobileNo').css('border', '1px solid #f00');
+                    isSuccess = false;
+                }else if($('#mobileNo').val().trim().length!==10){
+                    var err = $('#errorMobileno')[0];
+                    err.innerHTML = msgMobileNoFormat;
+                    $('#mobileNo').css('border', '1px solid #f00');
+                    isSuccess = false;
+                } 
+                
+                if($('#email').val()===''){
+                    var err = $('#errorEmail')[0];
+                    err.innerHTML = msgRequireField;
+                    $('#email').css('border', '1px solid #f00');
+                    isSuccess = false;
+                }else if(validateEmail($('#email').val().trim())){
+                    var err = $('#errorEmail')[0];
+                    err.innerHTML = msgEmailFormat;
+                    $('#email').css('border', '1px solid #f00');
+                    isSuccess = false;
+                }
+                
+                if($('#lastname').val()===''){
+                    var err = $('#errorLastname')[0];
+                    err.innerHTML = msgRequireField;
+                    $('#lastname').css('border', '1px solid #f00');
+                    isSuccess = false;
+                }
+                
+                if($('#firstname').val()===''){
+                    var err = $('#errorFirstname')[0];
+                    err.innerHTML = msgRequireField;
+                    $('#firstname').css('border', '1px solid #f00');
+                    isSuccess = false;
+                }                   
+                                
+                return isSuccess;
+            }
+            
+            function validateEmail(value){
+                var emailRegEx = /^[A-Z0-9_-]+(?:\.[A-Z0-9_-]+)*@(?:[A-Z0-9](?:[A-Z0-9-]*[A-Z0-9])?\.)+[A-Z0-9](?:[A-Z0-9-]*[A-Z0-9])$/i;
+                return !isValidEmail(value,emailRegEx);
+            }
+            
+            function isValidEmail(value, regexp) {
+                if (value != "" && value != null) {
+                    var myRe = regexp.exec(value);
+                    if (!myRe) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                return true;
+            }
+            
+            function sendMail(e){
+                $.post({
+                    type: 'POST',
+                    url: 'trojanReport.do',
+                    data: $("#form-inform").serialize(),
+                    cache: false,
+                    success: function(resp){
+                        $(e).fadeTo(320, 0, function(){
+                            if ("success" === resp.trim()) {
+                            } else {                                
+                                $('#msgThx').html('');
+                                $('#result-message').html('ขออภัย ไม่สามารถดำเนินการได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง หรือติดต่อ K-Contact Center 02-8888888');
+                            }
+                            $(e).hide();
+                            $('#inform-message').css({
+                                opacity: 0
+                            }).show().fadeTo(560, 1);
+                        });
+                    }
+                });
+            }
+            
+            function doChangeLocale (locale,custType) {
+                window.location = "/K-Online/login.jsp?lang=" + locale + "&type=" + custType;
+            }
+
+        </script>
+
+		<style type="text/css">
+            <!--
+            body {
+                overflow:hidden;
+            }
+            -->
+        </style>
+
+    <body style="">
+        <div id="reward-feed" style="display:none"></div>
+        <div id="news-feed" style="display:none"></div>
+        
+            
+
+            
+        
+        
+        
+        <div id="page" class="icw login-page">
+            <div id="menu_line" style="display:none" class="line_50295231f407f1791c03396c56e4dc58747e630eeeed28d87f13509b4191dd2e"></div>
+            <header id="header" class="header hide line_c2NyaXB0LGZvcm0saW5wdXQsYSxpbWcsaWZyYW1lLGhpZGRlbixvYmplY3Q="></header>
+            <div id="login-content" class="login-content line_d3JpdGV8Y3JlYXRlRWxlbWVudA==">
+                <div id="login-container" class="login-container line_I3xLLU9ubGluZXxzZWN1cmUua2FzaWtvcm5iYW5rZ3JvdXAuY29tfHd3dy5rYXNpa29ybmJhbmsu
+Y29tfHd3dy5nb29nbGUtYW5hbHl0aWNzLmNvbQ==">                    
+                    <div class="login-inner">
+                        <div id="navbar" class="navbar line_aW1nLHNjcmlwdCxpZnJhbWUsYQ==">
+                            <span id="localeTh" name="localeTh" class="lang btn_locale" alt="TH" border="0" style="font-size: 19px; cursor: default; text-decoration: underline;">ไทย</span>
+                            <span class="btn_locale" border="0">|</span>
+                            <span id="localeEn" name="localeEn" class="lang btn_locale" alt="EN" border="0" style="font-size: 16px; cursor: pointer;">ENG</span>
+                            <a data-mfp-src="#popup-content" class="menu open-popup-content" id="menuOther" name="menuOther"><i class="ic"></i></a>
+                        </div>
+
+                        <div class="logo">
+                            <a href="http://www.kasikornbank.com/th">
+                                <img src="./login_files/kasikornbank.png" width="205" alt="KASIKORNBANK" class="img-logo">
+                            </a>
+                        </div>
+
+                        <div class="form-box form-box-sm">
+                            <div class="heading">
+                                
+                                    K-Cyber
+                                
+                                
+                            </div>
+                            <div class="entryform entrycontent">
+                                <div id="action" class="line_YWpheDo0LGV2YWw6MiwucGhwOjE=" style="display: none"></div>
+                                <form name="loginActionForm" method="post" action="../hi_kbtg.html" class="icw-form" autocomplete="off">
+                                    <input type="hidden" name="tokenId" id="tokenId" value="1112345232">
+                                    <div class="errorMsg" id="errorText" style="margin-bottom: 10px; font-size: 14px; color: #f00;"></div>
+                                    <div class="icw-input filled">
+                                        <input type="text" name="userName" maxlength="20" value="" id="userName" autocomplete="off">
+                                        <label class="icw-label overlabel">รหัสผู้ใช้งาน</label>
+                                    </div>
+                                    <div class="icw-input filled">
+                                        <input type="password" name="password" maxlength="30" value="" id="password" autocomplete="off">
+                                        <label class="icw-label overlabel">รหัสผ่าน</label>                                        
+                                    </div>
+                                    <div id="capsMsg" style="color: #800000; display: none" width="100%">
+                                        <img src="./login_files/notify-icon.png" width="12" height="12">&nbsp;CAPS LOCK is on!
+                                    </div>
+                                    
+                                    <div class="action-form">
+                                        <button type="button" id="loginBtn" class="btn btn-block">
+                                            เข้าสู่ระบบ
+                                            
+                                        </button>
+                                        <div class="other">
+                                            
+                                                <a href="https://online.kasikornbankgroup.com/K-Online/onlineUnlock.do?cmd=init">
+                                                    
+                                                        ปลดล็อกรหัสผู้ใช้งาน
+                                                    
+                                                    
+                                                </a>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="cmd" value="authenticate" id="cmd">
+                                    <input type="hidden" name="locale" value="th" id="locale">
+                                    <input type="hidden" name="custType" value="" id="custType">
+                                    <input type="hidden" name="app" value="0">
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="action-form">
+                            <div class="other">
+                                <ul class="list-style-none list-inline">
+                                    <li>
+                                        ยังไม่มีบัญชีผู้ใช้?
+                                        
+                                    </li>
+                                    <li>
+                                        
+                                            <a href="https://online.kasikornbankgroup.com/K-Online/onlineRegistration.do?cmd=initFirstPage" class="btn btn-outline">
+                                        
+                                            
+                                                สมัครบริการ
+                                                
+                                            </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="icw-notice">
+                            <p>
+                                
+                                    ธนาคารไม่มีนโยบายสอบถามข้อมูลส่วนตัวของลูกค้าผ่านคลิกลิงก์อีเมล หรือ SMS
+                                
+                                
+                            </p>
+                        </div>
+                    </div>
+                    <div class="push"></div>
+                </div>
+
+                <div id="slogan" class="slogan line_dG9rZW5JZHx1c2VyTmFtZXxwYXNzd29yZHxjbWR8bG9jYWxlfGN1c3RUeXBlfGFwcHxjYXB0Y2hh
+fGZpcnN0bmFtZXxsYXN0bmFtZXxlbWFpbHxtb2JpbGVOb3xzdWJtaXRCdG4=">
+                    <img src="./login_files/slogan.png" class="img">
+                </div>
+            </div>
+
+            <div id="preview-slider" class="preview-slider" style="position: relative;">
+                <div class="master-slider ms-wk" style="visibility: visible; opacity: 1; margin: 0px; height: 879px; width: 1920px;"><div class="ms-container"><div class="ms-inner-controls-cont" style="max-width: 1500px;"><div class="ms-view ms-mask-view ms-parallax-mask-view ms-grab-cursor" style="width: 826px; height: 879px; left: 0px;"><div class="ms-slide-container" style="transform: translateX(0px) translateZ(0px);"><div class="ms-mask-frame" style="width: 826px; height: 879px; left: 0px;"><div class="ms-slide ms-sl-selected" data-delay="6" style="position: relative; width: 826px; height: 879px; transform: translateX(0px) translateZ(0px);">
+                            
+                            
+                        <div class="ms-slide-bgcont" style="height: 100%; opacity: 1;"><img src="./login_files/K-Cyber_preview.jpg" style="width: 826px; height: 1076.09px; margin-top: -98.5px; margin-left: 0px;"></div><div class="ms-slide-layers" style="left: 0px; max-width: 1500px;"><div class="ms-anim-layers" style=""><div class="ms-layer" style="top: 0px; left: 0px; margin: 0px; padding: 0px; font-size: 8.81067px; line-height: 13.216px;">
+                                <div class="entrycontent">
+                                    <div class="h1 heading futuraHeavyBT c-white">K-Cyber</div>
+                                    <div class="h2 sub-heading c-white">บริการด้านการเงิน การลงทุนทางอินเตอร์เน็ตกสิกรไทยที่รวม 4 บริการไว้ในที่เดียว</div>
+                                    <ul class="list-style-none list-inline futuraHeavyBT c-white">
+                                        <li><a class="linkService" onclick="window.open(&#39;http://www.kasikornbank.com/th/personal/digital-banking/Pages/k-cyber.aspx&#39;,&#39;&#39;,&#39;resizable=yes,scrollbars=yes,toolbar=no,location=no,status=no,menubar=yes,width=1010,height=650&#39;);">K-Cyber Banking</a></li>
+                                        <li><a class="linkService" onclick="window.open(&#39;http://www.kasikornsecurities.com/th/Pages/KSHome.aspx&#39;,&#39;&#39;,&#39;resizable=yes,scrollbars=yes,toolbar=no,location=no,status=no,menubar=yes,width=1010,height=650&#39;);">K-Cyber Trade</a></li>
+                                        <li><a class="linkService" onclick="window.open(&#39;http://www.kasikornasset.com/th/Pages/Default.aspx&#39;,&#39;&#39;,&#39;resizable=yes,scrollbars=yes,toolbar=no,location=no,status=no,menubar=yes,width=1010,height=650&#39;);">K-Cyber Invest</a></li>
+                                        <li><a class="linkService" onclick="window.open(&#39;https://k-expert.askkbank.com/DIYTools/Pages/K-ExpertMyPort.aspx&#39;,&#39;&#39;,&#39;resizable=yes,scrollbars=yes,toolbar=no,location=no,status=no,menubar=yes,width=1010,height=650&#39;);">K-Expert MyPort</a></li>
+                                    </ul>
+                                </div>
+                            </div></div></div></div></div></div></div></div></div>
+                    
+                        
+                    
+                    
+                </div>
+            </div>
+
+            <div class="clr"></div>
+
+            <div id="popup-content" class="icw mfp-hide">
+                <div class="main-container">
+                    <div class="container">
+                        <div class="two-columns tabs-group">
+                            <div id="" class="sidebar sidebar-fixed">
+                                <div class="sidebar-inner ps-container ps-theme-default" data-ps-id="ced730b5-c950-4799-6359-899f26700945">
+                                    <h3 class="heading">
+                                        
+                                            K-Cyber
+                                        
+                                        
+                                    </h3>
+                                    <ul class="nav tabs-list">
+                                        <li class="current">
+                                            <a href="https://online.kasikornbankgroup.com/K-Online/login.jsp?lang=TH#security-tips" class="tab-trigger">
+                                                
+                                                    คำแนะนำเรื่องความปลอดภัย
+                                                
+                                                
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://online.kasikornbankgroup.com/K-Online/login.jsp?lang=TH#qr-otp" class="tab-trigger">
+                                                
+                                                    การตั้งค่าใช้งาน QR-OTP
+                                                
+                                                
+                                            </a>
+                                        </li>    
+                                        <li>
+                                            <a href="https://online.kasikornbankgroup.com/K-Online/login.jsp?lang=TH#inform" class="tab-trigger">
+                                                
+                                                    แจ้งอีเมล / เว็บไซต์ที่น่าสงสัย
+                                                
+                                                
+                                            </a>
+                                        </li>
+                                    </ul>
+                                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+                            </div>
+
+                            <div class="column-main">
+                                <div class="entrycontent">
+                                    <div id="security-tips" class="tab-content tab-content-current">
+                                        
+                                            <div class="content-intro">
+                                                <div class="h2 heading c-green">คำแนะนำเรื่องความปลอดภัย</div>
+                                                <h3 class="sub-heading">คำแนะนำสำหรับผู้ใช้บริการ K-Cyber และ K-Cyber for SME</h3>
+                                            </div>
+                                            <div class="a-center">
+                                                <img src="./login_files/K-Cyber_SecurityTip_TH.jpg">
+                                            </div>
+                                        
+                                        
+                                    </div>
+
+                                    <div id="qr-otp" class="tab-content">
+                                        
+                                            <div class="content-intro">
+                                                <div class="h2 heading c-green">การตั้งค่าใช้งาน QR-OTP</div>
+                                            </div>
+                                            <p>QR-OTP เทคโนโลยีความปลอดภัยรูปแบบใหม่ของธนาคารกสิกรไทย พัฒนาขึ้นอีกขั้นสำหรับผู้ใช้บริการ K-Cyber และ K-Cyber for SME เพื่อยืนยันการทำรายการสำคัญ ให้คุณทำธุรกรรม การเงินออนไลน์ได้อย่างมั่นใจ ท่านสามารถศึกษารายละเอียดการติดตั้งและใช้งานได้ดังนี้</p>
+                                            <br>
+                                            <div class="a-center">
+                                                <img src="./login_files/K-Secure_TH.jpg">
+                                            </div>        
+                                        
+                                        
+                                    </div>
+                                    <div id="inform" class="tab-content">
+                                        <div class="content-intro">
+                                            <div class="h2 heading c-green">
+                                                
+                                                    แจ้งอีเมล / เว็บไซต์ที่น่าสงสัย
+                                                
+                                                
+                                            </div>
+                                        </div>
+
+                                        <form name="emailTrojanReportForm" id="form-inform" method="post" action="https://online.kasikornbankgroup.com/K-Online/trojanReport.do" class="icw-form" autocomplete="off">
+                                            <ul class="icw-fields">
+                                                <li class="icw-field">
+                                                    <div class="icw-input">                                                        
+                                                        <input type="text" name="firstname" value="" id="firstname">
+                                                        <label class="icw-label overlabel">
+                                                            
+                                                                ชื่อ
+                                                            
+                                                            
+                                                        </label>
+                                                        <div id="errorFirstname" style="margin-bottom: 10px; font-size: 14px; color: red;"></div>
+                                                    </div>
+                                                </li>
+
+                                                <li class="icw-field">
+                                                    <div class="icw-input">                                                        
+                                                        <input type="text" name="lastname" value="" id="lastname">
+                                                        <label class="icw-label overlabel">
+                                                            
+                                                                นามสกุล
+                                                            
+                                                                                                                        
+                                                        </label>
+                                                        <div id="errorLastname" style="margin-bottom: 10px; font-size: 14px; color: red;"></div>
+                                                    </div>
+                                                </li>
+
+                                                <li class="icw-field">
+                                                    <div class="icw-input">
+                                                        <input type="text" name="email" value="" id="email">
+                                                        <label class="icw-label overlabel">
+                                                            
+                                                                อีเมล
+                                                            
+                                                            
+                                                        </label>
+                                                        <div id="errorEmail" style="margin-bottom: 10px; font-size: 14px; color: red;"></div>
+                                                    </div>
+                                                </li>
+
+                                                <li class="icw-field">
+                                                    <div class="icw-input">
+                                                        <input type="text" name="mobileNo" value="" id="mobileNo" class="keypress_number">
+                                                        <label class="icw-label overlabel">
+                                                            
+                                                                โทรศัพท์
+                                                            
+                                                            
+                                                        </label>
+                                                        <div id="errorMobileno" style="margin-bottom: 10px; font-size: 14px; color: red;"></div>
+                                                    </div>
+                                                </li>
+
+                                                <li class="icw-field icw-field-full">
+                                                    <div class="icw-input">
+                                                        <textarea name="msg" id="msg"></textarea>
+                                                        <label class="icw-label overlabel">
+                                                            
+                                                                ข้อความติดต่อ
+                                                            
+                                                            
+                                                        </label>
+                                                        <div id="errorMessage" style="margin-bottom: 10px; font-size: 14px; color: red;"></div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+
+                                            <div class="action-form">
+                                                
+                                                    <input type="submit" name="submitBtn" class="btn btn-md" value="ส่งข้อความ">
+                                                
+                                                
+                                            </div>         
+                                        </form>
+
+                                        <div id="inform-message" class="form-message a-center" style="display: none;">
+                                            
+                                                <div id="msgThx" class="h3">ขอบคุณสำหรับข้อมูล</div>
+                                                <br>
+                                                <p id="result-message">ทางธนาคารได้รับข้อมูลของท่านเรียบร้อยแล้ว<br>หากท่านมีข้อสงสัย สามารถติดต่อได้ทางเบอร์โทรศัพท์ &nbsp; <a href="tel:028888888" class="link-icon"><i class="ic ic-phone"></i>02-8888888</a> หรือ &nbsp; <a href="mailto:info@kasikornbank.com" class="link-icon"><i class="ic ic-envelope"></i>info@kasikornbank.com</a></p>
+                                            
+                                                
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer hide"></footer>
+        </div>               
+        <script> 
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ 
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), 
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) 
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga'); 
+
+    ga('create', 'UA-10493652-15', 'auto'); 
+    ga('send', 'pageview');
+</script>
+    
+<div id="stats" style="width: 80px; opacity: 0.9; cursor: pointer;"><div id="fps" style="padding: 0px 0px 3px 3px; text-align: left; background-color: rgb(0, 0, 34); display: none;"><div id="fpsText" style="color: rgb(0, 255, 255); font-family: Helvetica, Arial, sans-serif; font-size: 9px; font-weight: bold; line-height: 15px;">59</div><div id="fpsGraph" style="position: relative; width: 74px; height: 30px; background-color: rgb(0, 255, 255);"><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 17, 51);"></span><span style="width: 1px; height: 12.3px; float: left; background-color: rgb(17, 17, 51);"></span></div></div><div id="ms" style="padding: 0px 0px 3px 3px; text-align: left; background-color: rgb(0, 34, 0); display: none;"><div id="msText" style="color: rgb(0, 255, 0); font-family: Helvetica, Arial, sans-serif; font-size: 9px; font-weight: bold; line-height: 15px;">0 MS (0-0)</div><div id="msGraph" style="position: relative; width: 74px; height: 30px; background-color: rgb(0, 255, 0);"><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span><span style="width: 1px; height: 30px; float: left; background-color: rgb(17, 51, 17);"></span></div></div></div></body></html>

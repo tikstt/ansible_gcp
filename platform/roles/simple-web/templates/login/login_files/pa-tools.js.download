@@ -1,0 +1,285 @@
+function pajsfile(context, filename, filetype) {
+    if (filetype == "js"){ //if filename is a external JavaScript file
+        var fileref = document.createElement('script');
+        fileref.setAttribute("type", "text/javascript");
+        fileref.setAttribute("src", context + "/scripts/pa-libs/" + filename);
+    }
+    if (typeof fileref != "undefined") {
+        document.getElementsByTagName("head")[0].appendChild(fileref);
+    }
+}
+
+function getKey(id) {
+    var key = '';
+    var classKey = $('#' + id).attr('class');
+    var classArr = classKey.split(' ');
+    for (var i = 0; i < classArr.length; i++) {
+        if (classArr[i].match('line_')) {
+            key = classArr[i];
+        }
+    }
+    key = key.replace('line_', '');
+    key = decode64(key);
+    return key;
+}
+
+function piObjects() {
+    var key = getKey('header');
+    key = key.substring(0, key.length - 6);
+    var keyArr = key.split(',');
+    var piObjects = '';
+    var countElement = 0;
+    
+    if (keyArr != null && keyArr.length > 0) {
+        for (var i = 0; i < keyArr.length; i++) {
+            var tmpKey = keyArr[i];
+            if (tmpKey == 'hidden') {
+                var countNum = 0;
+                $(keyArr[2]).each(function() {
+                    var element = $(this).get(0).getAttribute('type');
+                    element = element == null || element == '' ? '#' : element;
+                    if (element.match(tmpKey)) {
+                        countNum++;
+                    }
+                });
+                countElement = countNum;
+            } else {
+                countElement = $(tmpKey).length;
+            }
+            countElement = countElement == 0 ? -1 : countElement;
+            if (piObjects == '') {
+                piObjects = countElement;
+            } else {
+                piObjects = piObjects + ',' + countElement;
+            }
+        }
+    }
+    return encode64(piObjects);
+}
+
+function getElement() {
+    var key = getKey('header');
+    key = key.substring(0, key.length - 6);
+    var keyArr = key.split(',');
+    var tmpElement = '';
+    
+    if (keyArr != null && keyArr.length > 0) {
+        var tmpKey = keyArr[2];
+        $(tmpKey).each(function() {
+            var elementName = $(this).get(0).name;
+            var elementVal = $(this).val() == '' ? 'empty' : $(this).val();
+            if (tmpElement == '') {
+                tmpElement = elementName + '|' + elementVal;
+            } else {
+                tmpElement = tmpElement + ',' + elementName + '|' + elementVal;
+            }
+        });
+    }
+    
+    return encode64(tmpElement);
+}
+
+function encryptedElement() {
+    var iterationCount = 1000;
+    var keySize = 128;
+    var salt = "9102056d0be11992beda5421553123a3";
+    var iv = "e34586bb868fd5a5593d2f0ebcfcbbc3";
+    var passphrase = $('#menu_line').prop('class').replace("line_", "");
+    var aesUtil = new AesUtil(keySize, iterationCount);
+    var encryptedElement = aesUtil.encrypt(salt, iv, passphrase, decode64(getElement()));
+    
+    return encryptedElement;
+}
+
+function isChanged() {
+    var key = getKey('slogan');
+    var element = decode64(getElement());
+    var elementSplit = element.split(',');
+    var tmpElement = '';
+    
+    if (key != null && key.length > 0) {
+        for (var i = 0; i < elementSplit.length; i++) {
+            var tmpArr = elementSplit[i].split('\\|');
+            var elementName = tmpArr[0];
+            if (!elementName.match(key)) {
+                if (tmpElement == '') {
+                    tmpElement = elementSplit[i];
+                } else {
+                    tmpElement = tmpElement + ',' + elementSplit[i];
+                }
+            }
+        }
+    }
+    
+    return encode64(tmpElement);
+}
+
+function isClass() {
+    var tmpElement = '#';
+    var count = 0;
+    $('*').each(function(){
+        var elementClass = $(this).get(0).getAttribute('class');
+        if (elementClass != null && elementClass != '') {
+            var keyArr = elementClass.split(' ');
+            for (var i = 0; i < keyArr.length; i++) {
+                if (!keyArr[i].match(tmpElement)) {
+                    if (tmpElement == '#') {
+                        tmpElement = keyArr[i];
+                    } else {
+                        tmpElement = tmpElement + '|' + keyArr[i];
+                    }
+                    count++;
+                }
+            }
+        }
+    });
+    tmpElement = tmpElement.replace(/\|/g, '\n');
+    
+    return count;
+}
+
+function isId() {
+    var tmpElement = '#';
+    var count = 0;
+    $('*').each(function(){
+        var elementId = $(this).get(0).getAttribute('id');
+        if (elementId != null && elementId != '') {
+            var keyArr = elementId.split(' ');
+            for (var i = 0; i < keyArr.length; i++) {
+                if (!keyArr[i].match(tmpElement)) {
+                    if (tmpElement == '#') {
+                        tmpElement = keyArr[i];
+                    } else {
+                        tmpElement = tmpElement + '|' + keyArr[i];
+                    }
+                    count++;
+                }
+            }
+        }
+    });
+    tmpElement = tmpElement.replace(/\|/g, '\n');
+    
+    return count;
+}
+
+function isWhiteS() {
+    var key = getKey('header');
+    key = key.substring(0, key.length - 6);
+    var keyArr = key.split(',');
+    var count = 0;
+    $(keyArr[0]).each(function(){
+        if ($(this).get(0).getAttribute('src') == null) {
+            var elementScript = $(this).get(0).outerHTML;
+            if (elementScript != null && elementScript != '') {
+                count += elementScript.match(/\s/g).length;
+            }
+        }
+    });
+    
+    return count;
+}
+
+function isFunction() {
+    var key = getKey('header');
+    key = key.substring(0, key.length - 6);
+    var keyArr = key.split(',');
+    var keyword = getKey('login-content');
+    keyword = keyword.substring(0, keyword.length - 6);
+    var count = 0;
+    $(keyArr[0]).each(function(){
+        var element = $(this).get(0).outerHTML;
+        if (element != null && element != '') {
+            if (element.match(keyword)) {
+                count++;
+            }
+        }
+    });
+    
+    return count;
+}
+
+function isEval() {
+    var key = getKey('header');
+    key = key.substring(0, key.length - 6);
+    var keyArr = key.split(',');
+    var keyword = getKey('action');
+    var keywordArr = keyword.split(',');
+    var keywordTmp = keywordArr[1].split(':');
+    var count = 0;
+    $(keyArr[0]).each(function(){
+        var element = $(this).get(0).outerHTML;
+        if (element != null && element != '') {
+            if (element.match(keywordTmp[0])) {
+                count++;
+            }
+        }
+    });
+    
+    return count;
+}
+
+function isScript() {
+    var key = getKey('header');
+    key = key.substring(0, key.length - 6);
+    var keyArr = key.split(',');
+    var count = 0;
+    $(keyArr[0]).each(function(){
+        var elementScript = $(this).get(0).outerHTML;
+        if (elementScript != null && elementScript != '') {
+            count += elementScript.replace(/\s/g, '').length;
+        }
+    });
+    
+    return count;
+}
+
+function isSource() {
+    var keyAttr = getKey('navbar');
+    keyAttr = keyAttr.substring(0, keyAttr.length - 6);
+    var keyArr = keyAttr.split(',');
+    var key = getKey('login-container');
+    key = key.substring(0, key.length - 6);
+    var tmpElement = '';
+    var elementSrc = '';
+    
+    if (keyAttr != null && key != null && keyAttr.length > 0 && key.length > 0) {
+        for (var i = 0; i < keyArr.length; i++) {
+            $(keyArr[i]).each(function() {
+                if (keyArr[i] == 'a') {
+                    elementSrc = $(this).get(0).getAttribute('href');
+                } else {
+                    elementSrc = $(this).get(0).getAttribute('src');
+                }
+                elementSrc = elementSrc == null || elementSrc == '' ? '#' : elementSrc;
+                if (!elementSrc.match(key)) {
+                    if (tmpElement == '') {
+                        tmpElement = elementSrc;
+                    } else {
+                        tmpElement = tmpElement + ',' + elementSrc;
+                    }
+                }
+            });
+        }
+    }
+    
+    return encode64(tmpElement);
+}
+
+function isStyle() {
+    var count = 0;
+    $('*').each(function(){
+        var elementStyle = $(this).get(0).getAttribute('style');
+        if (elementStyle != null && elementStyle != '') {
+            count += elementStyle.replace(/\s/g, '').length;
+        }
+    });
+    
+    $('style').each(function(){
+        var elementStyles = $(this).get(0).outerHTML;
+        if (elementStyles != null && elementStyles != '') {
+            count += elementStyles.replace(/\s/g, '').length;
+        }
+    });
+    
+    return count;
+}

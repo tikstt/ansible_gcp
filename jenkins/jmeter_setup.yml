@@ -1,0 +1,32 @@
+---
+- hosts: gce_jmeter_ips
+  tasks:
+    - name: Run the equivalent of "apt-get update" as a separate step
+      apt:
+        update_cache: yes  
+      ignore_errors: yes    
+      
+    - name: Install mlocate client
+      apt: name=mlocate state=present   
+      
+    - name: Install jmeter via command module
+      apt: name=jmeter state=present      
+  
+- name:  Install Java8
+  hosts: gce_jmeter_ips
+  roles:
+    - role: william-yeh.oracle_java
+      become: yes
+  vars:
+    java_version: 8
+    java_subversion: 192
+    java_build: 12
+    java_download_from_oracle: false
+    
+- hosts: gce_jmeter_ips
+  tasks: 
+    - name: download jenkins slave client
+      get_url: url=http://jenkins.ispacebar.com:8080/jnlpJars/agent.jar dest=/var/agent.jar 
+
+    - name: connect to jenkins master
+      command: "nohup java -jar /var/agent.jar -jnlpUrl http://jenkins.ispacebar.com:8080/computer/jmeter/slave-agent.jnlp -secret 24cbb6b05b68a4f4f80b85aa6086580a7234cce3659a32df6a94dbeb0d7fa7b2 -workDir '/var/www'"

@@ -1,0 +1,16 @@
+- hosts: gce_gitlab_ips
+  tasks:
+  - name: Create Gitlab User
+    gitlab_user:
+      server_url: https://gitlab.ispacebar.com
+      validate_certs: false
+      login_user: tikstt
+      login_password: tik@1234
+      name: Jukgrid Silatong
+      username: tikstt
+      password: mysecretpassword
+      email: tikstt@gmail.com
+      sshkey_name: ansible_gcp
+      sshkey_file: ssh-rsa AAABAQCHWG7mEUIPuCWJS9i1aTMObxNG9Uv7s2rSWLUqSFaS/XkPTwoTiTdJV9zRLpBE2F35dF+n4ZSRcLBiGHUwpSq0jTn4/gcuAMWGPmwu88fxjgLCRTBZh5+hnrrACbHZz/4xpmxo5mz6u1Znwc7p1BqHWS1ctiZqvtFZB1/+mhBAuGdQiiiCWfpXFMb9+6fO0pm9Vz1L3aLCGjzkxjVEgzuHjIharnPhInJrv127V6uOlQ3TYh8oWjdbVnJb2k32xTad4gMRGWFoRGHWXgXNnT/2hn3deMX2+YEkn8WXkDs7kc00ImPqq5eD/a0R+s9PTNS4o3PXGiZwctYB4Em+HsmlAAAAgQD0cCYNFkl5eGohr6rfMwfRCHs2B87udSUpAA+QTOM5/oNUslHT5f5f2GWV/erlK9WFKbXyiGkiZ0TLmBDugDQmCvWIUpPbFALdZJH01C7v1LOkEPg+6Vw3NjkBscGnoTtWZkOeFJMGIScOkyHJxtOzn1xitD0Lm+JRGETurYPpHwAAAIEAwj8LxeRwTWb+mL8zAL7o4K2vvy/j4iUjNHSek6Gx3w2WMv8ArKZR3ybsl8afmYrPaBk0vyh7voqo+Fku4g7657NnwPqdS+vBjRirK8MMFult1mQoooKqoWCTuKS0tMTT9jTYtGKKZJCIoV7u03A2Mi/Dwt+WEEE67xwkN23Sc70AAACAT9aIz+dBJTkfgHMhdVVZrf7kPbL7DZlEbt8XRFzegqN6Bij++veR3b9uVgIDs2nRIW6T2f3zm/1B1SYHMzvQVKggdT9PuywDHwEmmMABr+6UvszbI7/fvorvNgGGJZqnq46Wx1YaZ9S/slkrBic3HjDZtMZfyyeWW5Mq079hUBk=
+      state: present
+    delegate_to: localhost   

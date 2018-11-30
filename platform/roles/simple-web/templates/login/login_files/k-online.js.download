@@ -1,0 +1,72 @@
+$(function() {
+    if($(".smart-app").length){
+        var isMobile = {
+            Android: function() {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function() {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function() {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function() {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function() {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function() {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+            }
+        };
+        
+        if( isMobile.Android() ) {
+            $("#smart-app-android").show();
+            $("#smart-app-ios").remove();
+        } else if( isMobile.iOS() ) {
+            $("#smart-app-ios").show();
+            $("#smart-app-android").remove();
+        } else {
+            $("#smart-app-ios").remove();
+            $("#smart-app-android").remove();
+        }
+        
+        $(".smart-app").each(function(){
+            var smart_app = $(this),
+                btn_close = $(this).find(".smart-app-close");
+            btn_close.click(function() {
+                smart_app.fadeOut(100);
+            });
+        });
+    }
+});
+
+
+$(function() {
+    if($(".preview-slider").length){
+        $(".preview-slider").each(function(){
+            var hlslider = $(this),
+                msslider = $(this).find(".master-slider"),
+                items = $(this).find(".ms-slide"),
+                total = items.length,
+                loop = items.length > 2,
+                slider = new MasterSlider();
+
+            slider.setup(msslider, {
+                width: 1500,
+                height: 1954,
+                autoHeight: true,
+                layout: "fullscreen",
+                view: "parallaxMask",
+                space: 0,
+                autoplay: true,
+                loop: loop
+            });
+
+            if(total > 1) {
+                slider.control('bullets');
+            }
+        });
+    }
+});

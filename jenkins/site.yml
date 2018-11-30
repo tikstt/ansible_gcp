@@ -1,0 +1,12 @@
+---
+- include: jenkins_instance.yml #8080 master,36310 slave
+- include: jenkins_setup.yml
+# - include: sonarqube_instance.yml
+# - include: sonarqube_setup.yml
+# - include: robotframework_instance.yml
+# - include: robotframework_setup.yml
+# - include: jmeter_instance.yml
+# - include: jmeter_setup.yml
+# - include: gitlab_instance.yml #80,443
+# - include: gitlab_setup.yml
+#- include: gitlab_cicd.yml

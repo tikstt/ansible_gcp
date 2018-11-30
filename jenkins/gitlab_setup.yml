@@ -1,0 +1,5 @@
+- hosts: gce_gitlab_ips
+  vars_files:
+    - ci_vars/gitlab.yml
+  roles:
+    - { role: geerlingguy.gitlab }

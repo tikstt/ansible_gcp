@@ -1,0 +1,57 @@
+# Example Playbook
+- name: Compute Engine Create Instance Group
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: create a network
+      gcp_compute_network:
+          name: "network-instancegroup"
+          project: "{{ project_id }}"
+          auth_kind: "{{ auth_kind }}"
+          service_account_file: "{{ credentials_file }}"
+          state: present
+      register: network
+      
+    - name: create a address
+      gcp_compute_address:
+          name: "addressinstancetemplate"
+          region: us-west1
+          project: "{{ project_id }}"
+          auth_kind: "{{ auth_kind }}"
+          service_account_file: "{{ credentials_file }}"
+          state: present
+      register: address
+ 
+    - name: create a instance template
+      gcp_compute_instance_template:
+          name: "tikgroup-instance-template"
+          properties:
+            disks:
+            - auto_delete: true
+              boot: true
+              initialize_params:
+                source_image: projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts
+            machine_type: n1-standard-1
+            network_interfaces:
+            - network: "{{ network }}"
+              access_configs:
+              - name: test-config
+                type: ONE_TO_ONE_NAT
+                nat_ip: "{{ address }}"
+          project: "{{ project_id }}"
+          auth_kind: "{{ auth_kind }}"
+          service_account_file: "{{ credentials_file }}"
+          state: present
+      register: instancetemplate
+
+    - name: create a instance group manager
+      gcp_compute_instance_group_manager:
+          name: "group-manager"
+          base_instance_name: test1-child
+          instance_template: "{{ instancetemplate }}"
+          target_size: 3
+          zone: us-west1-a
+          project: "{{ project_id }}"
+          auth_kind: "{{ auth_kind }}"
+          service_account_file: "{{ credentials_file }}"
+          state: present          

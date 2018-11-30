@@ -1,0 +1,65 @@
+---
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes   
+ 
+- name: Install python-apt via command module
+  apt: name=python-apt state=latest
+# - name: Install python-apt via command module
+  # become: yes
+  # command: apt-get install python-apt -y  
+
+  
+- name: Install apache on instances
+  apt: name=apache2 state=present
+  
+# - name: Install apache2 via command module
+  # become: yes
+  # command: apt-get install apache2 -y  
+
+- name: Create custom index.html
+  template: src=index.html.j2 dest=/var/www/index.html
+
+- name: Create custom hi_kbtg.html
+  template: src=hi_kbtg.html dest=/var/www/hi_kbtg.html  
+  
+- name: Create custom login.html
+  template: src=login.html dest=/var/www/login.html    
+  
+- synchronize:
+    src: /home/tikstt/ansible/platform/roles/simple-web/templates/login
+    dest: /var/www/ 
+  #delegate_to: "{{ inventory_hostname }}"  
+  
+
+# - name: Copy Login Folder
+  # command: cp -r /home/tikstt/ansible/platform/roles/simple-web/templates/login /var/www/login/ 
+  
+- name: Set file stats on index.html
+  file: path=/var/www/index.html owner=root group=root mode=0644
+
+- name: Deploy modified apache conf
+  copy: src=apache2.conf dest=/etc/apache2/apache2.conf
+        owner=root group=root mode=0644
+
+# - name: Enable mod_headers
+  # file: path=/etc/apache2/mods-enabled/headers.load
+        # # src=/etc/apache2/mods-available/headers.load state=link
+
+# mod_headers
+- name: Enable mod_headers
+  apache2_module: name=headers state=present
+  # notify:
+  # - Restart apache
+
+# mod_rewrite
+- name: Enable mod_rewrite
+  apache2_module: name=rewrite state=present
+  # notify:
+  # - Restart apache        
+        
+- name: Re-load apache
+  service: name=apache2 state=reloaded 
+
+- name: Re-start apache
+  service: name=apache2 state=restarted   

@@ -1,0 +1,45 @@
+# Example Playbook
+- name: Compute Engine Instance Examples
+  hosts: local
+  connection: local
+  vars_files:
+    - vars/gcp_auth    
+  tasks:
+    - name: create multiple instances
+      # Basic provisioning example.  Create multiple Debian 8 instances in the
+      # us-central1-a Zone of n1-standard-1 machine type.
+      gce:
+        instance_names: micro1
+        #instance_names: micro1,micro2
+        zone: us-central1-a
+        #machine_type: n1-standard-1
+        machine_type: f1-micro
+        image: debian-8
+        state: present
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
+        metadata : '{ "startup-script" : "apt-get update" }'
+      register: gce
+    - name: Save host data
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: gce_instances_ips
+      with_items: "{{ gce.instance_data }}"
+    - name: Wait for SSH for instances
+      wait_for:
+        delay: 1
+        host: "{{ item.public_ip }}"
+        port: 22
+        state: started
+        timeout: 30
+      with_items: "{{ gce.instance_data }}"
+    # - name: Configure Hosts
+      # hosts: gce_instances_ips
+      # become: yes
+      # become_method: sudo
+      # roles:
+        # - my-role-one
+        # - my-role-two
+      # tags:
+        # - config

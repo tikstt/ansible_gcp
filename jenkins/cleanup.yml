@@ -1,0 +1,38 @@
+---
+# compute-video-demo-ansible
+- name: Destroy all jenkins & Friend
+  hosts: local
+  connection: local
+  gather_facts: False
+  vars_files:
+    - gce_vars/auth
+    - gce_vars/machines
+    - gce_vars/jenkinszone
+  tasks:
+    - name: Destroy the jenkins/gitlab/sonarqube/robotframework/jmeter instances
+      gce:
+        instance_names: "{{ item.name }}"
+        zone: "{{ jenkins_zone }}"
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
+        state: absent
+      with_items:
+        - { name: "jenkins1", zone: "us-central1-a" }
+        - { name: "gitlab1", zone: "us-central1-a" }
+        - { name: "sonarqube1", zone: "us-central1-a" }
+        - { name: "robotframework1", zone: "us-central1-b" }
+        - { name: "jmeter1", zone: "us-central1-b" }        
+    - name: Make sure the persistent disks are destroyed
+      gce_pd: name={{ item.name }} zone={{ item.zone }} state=absent
+              project_id={{ project_id }} credentials_file={{ credentials_file }} service_account_email={{ service_account_email }}
+      with_items:
+        - { name: "jenkins1", zone: "us-central1-a" }
+        - { name: "gitlab1", zone: "us-central1-a" }
+        - { name: "sonarqube1", zone: "us-central1-a" }
+        - { name: "robotframework1", zone: "us-central1-b" }
+        - { name: "jmeter1", zone: "us-central1-b" }
+        
+
+       
+        
